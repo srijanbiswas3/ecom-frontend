@@ -19,9 +19,9 @@ function Brands() {
         <div className='brands m-5'>
             Shop by Brands
             {brands.length == 0 ? <Skeleton className="h-44 w-full rounded-xl m-5" />
-                : <div className='flex justify-between m-5'>
+                : <div className='flex justify-center md:justify-between m-5 flex-wrap'>
                     {brands.map((brand, index) => (
-                        <div key={brand?.id} className='m-1 bg-white rounded-lg h-40 w-40 justify-center items-center flex'>
+                        <div key={brand?.id} className='m-1 bg-white rounded-lg h-40 w-full md:w-40 justify-center items-center flex'>
                             <img className='h-24 cursor-pointer' src={brand?.brandLogo?.url} alt="" />
                         </div>
                     ))}

@@ -48,6 +48,8 @@ const GetProduct = async (productId) => {
         images {
           url
           id
+          width
+          height
         }
       }
     }

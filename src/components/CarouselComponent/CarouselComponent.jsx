@@ -28,7 +28,7 @@ function CarouselComponent() {
 
   return (
     <>
-      {carousels.length == 0 ? <Skeleton className="h-96  w-full rounded-xl m-5" />
+      {carousels.length == 0 ? <Skeleton className="h-96  w-screen rounded-xl m-5" />
         : <Carousel plugins={[
           Autoplay({
             delay: 2000,

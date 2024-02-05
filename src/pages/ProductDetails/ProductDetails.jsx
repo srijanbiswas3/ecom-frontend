@@ -31,7 +31,7 @@ function ProductDetails() {
         setCurrent(api.selectedScrollSnap() + 1)
 
         api.on("select", () => {
-            console.log("current")
+
             setCurrent(api.selectedScrollSnap() + 1)
         })
     }, [api])
@@ -44,35 +44,35 @@ function ProductDetails() {
     }
 
     return (
-        <div className='container flex p-5'>
-            <div className='w-1/2 -ml-40'>
+        <div className='container md:flex p-5'>
+            <div className='md:w-1/2 m-3 '>
 
-                <Carousel setApi={setApi} className=''>
+                <Carousel setApi={setApi} className='h-[70vh]'>
                     <CarouselContent>
                         {product?.images.map((image, index) => (
 
-                            <CarouselItem key={image?.id} className='h-[600px] flex items-center justify-center'>
-                                <img className=' items-center object-cover w-full scale-75 object-center rounded-xl' src={image?.url} alt="" />
+                            <CarouselItem key={image?.id} className='flex items-center justify-center'>
+                                <img className={` items-center ${image?.height > image?.width ? 'h-[500px]' : 'w-full'} rounded-xl`} src={image?.url} alt="" />
                             </CarouselItem>
                         ))}
                     </CarouselContent >
-                    <CarouselPrevious className='h-full border-white' />
-                    <CarouselNext className='h-full border-white' />
+                    <CarouselPrevious className='h-full border-white hidden' />
+                    <CarouselNext className='h-full border-white hidden' />
                 </Carousel>
                 {/* <div className="py-2 text-center text-sm text-muted-foreground">
                     Slide {current} of {count}
                 </div> */}
 
-                <div className='flex space-x-2 mt-5 -ml-20'>
+                <div className=' thumbnail flex flex-wrap space-x-2 mt-5 justify-around items-center z-10'>
                     {product?.images.map((image, index) => (
-                        <img key={image?.id} src={image?.url} alt="" className={current === index + 1 ? 'h-32 border-4 border-black transform scale-125 transition-transform duration-500' : 'h-32 scale-80 '}
+                        <img key={image?.id} src={image?.url} alt="" onMouseEnter={() => { setCurrent(index + 1); api && api.scrollTo(index); }} className={current === index + 1 ? 'h-20 border-4 border-black scale-150 duration-500 my-2 rounded-lg' : 'cursor-pointer h-20 my-2'}
 
                         />
                     ))}
                 </div>
 
             </div>
-            <div className='w-1/2 ml-20 p-6 rounded-md shadow-md'>
+            <div className=' md:w-1/2 p-6 rounded-md shadow-md m-3'>
                 <h2 className='text-2xl font-bold mb-4'>{product?.name}</h2>
                 <p className=' mb-2'>{product?.description}</p>
                 <div className='flex items-center mb-2'>

@@ -12,14 +12,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
 function Header() {
 
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const clerk = useClerk();
 
   const { isSignedIn, user, isLoaded } = useUser();
@@ -32,16 +32,18 @@ function Header() {
   return (
     <div className='bg-slate-400 h-20 flex justify-around items-center p-4 '>
 
-      <div className='flex items-center cursor-pointer' onClick={()=>navigate('/')}>
+      <div className='flex items-center cursor-pointer' onClick={() => navigate('/')}>
         <img className='h-10 rounded-lg mr-3' src={Logo} alt="logo" />
         <h2 className='text-blue-800 dark:text-white text-lg font-bold'>ECom App</h2>
-      </div>
-      <h3 className='text-white font-bold text-xl bg-gray-300 p-5 cursor-pointer' onClick={()=>navigate('products')}>Products</h3>
-      <div>
+
+
+
 
         <input className='p-2 rounded-lg' type="text" placeholder='Search' />
       </div>
       <div className='items-center space-x-2 flex'>
+        <Link className='text-white font-bold cursor-pointer' to={'/products'}>Products</Link>
+
         <div className=' flex  space-x-2'>
           <DropdownMenu>
             <DropdownMenuTrigger>

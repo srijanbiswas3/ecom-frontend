@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 
 function Products() {
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [pages, setPages] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [products, setProducts] = useState([])
@@ -40,7 +40,6 @@ function Products() {
       pagess.push(i)
     }
     setPages(pagess)
-    console.log(pagess)
 
   }, [])
 
@@ -56,7 +55,7 @@ function Products() {
     <div className=' container '>
       <div className='h-screen flex space-x-5 justify-around flex-wrap '>
         {products.slice(itemCount.startItem, itemCount.endItem).map((product, index) => (
-          <div className='h-96 w-60 shadow-xl flex flex-col my-5' onClick={()=>{navigate(`${product.id}`,{productId:product.id})}}>
+          <div className='h-96 w-60 shadow-xl flex flex-col my-5' onClick={() => { navigate(`${product.id}`, { productId: product.id }) }} key={product?.id}>
             <img src={product?.images[1]?.url} alt="" className='w-full h-64 object-cover scale-90 transition-transform duration-300 hover:scale-100' />
             <h1 className='text-center'>{product.name}</h1>
           </div>

@@ -10,7 +10,7 @@ function HomePage() {
   return (
     <div >
 
-      <div className='carousel container p-5'>
+      <div className='container p-5 '>
         <CarouselComponent />
         <Categories />
         <Brands/>
