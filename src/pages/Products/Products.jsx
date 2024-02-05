@@ -52,11 +52,11 @@ function Products() {
   }
 
   return (
-    <div className=' container '>
+    <div className=' container pt-20'>
       <div className='h-screen flex space-x-5 justify-around flex-wrap '>
         {products.slice(itemCount.startItem, itemCount.endItem).map((product, index) => (
           <div className='h-96 w-60 shadow-xl flex flex-col my-5' onClick={() => { navigate(`${product.id}`, { productId: product.id }) }} key={product?.id}>
-            <img src={product?.images[1]?.url} alt="" className='w-full h-64 object-cover scale-90 transition-transform duration-300 hover:scale-100' />
+            <img src={product?.images[1]?.url} alt="" className='-z-10 w-full h-64 object-cover scale-90 transition-transform duration-300 hover:scale-100' />
             <h1 className='text-center'>{product.name}</h1>
           </div>
 

@@ -6,11 +6,11 @@ import Categories from '@/components/Categories/Categories'
 import CarouselComponent from '@/components/CarouselComponent/CarouselComponent'
 import Brands from '@/components/Brands/Brands'
 
-function HomePage() {
+function Home() {
   return (
     <div >
 
-      <div className='container p-5 '>
+      <div className='container p-5 pt-32'>
         <CarouselComponent />
         <Categories />
         <Brands/>
@@ -20,4 +20,4 @@ function HomePage() {
   )
 }
 
-export default HomePage
+export default Home

@@ -44,7 +44,7 @@ function ProductDetails() {
     }
 
     return (
-        <div className='container md:flex p-5'>
+        <div className='container md:flex p-5 pt-20'>
             <div className='md:w-1/2 m-3 '>
 
                 <Carousel setApi={setApi} className='h-[70vh]'>
