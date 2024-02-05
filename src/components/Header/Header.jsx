@@ -25,6 +25,9 @@ import {
 } from "@/components/ui/sheet"
 
 
+import { Input } from "@/components/ui/input"
+
+
 
 
 function Header() {
@@ -49,14 +52,16 @@ function Header() {
 
   return (
     <div>
-
-      <nav className='h-20 w-full bg-blue-700 flex items-center justify-around fixed z-20'>
-
+      <nav className='h-20 w-full bg-blue-700 flex items-center justify-around fixed z-10'>
         <div className='md:flex items-center cursor-pointer ms-6' onClick={() => navigate('/')}>
-          <img className='h-10 rounded-lg mr-3' src={Logo} alt="logo" />
-          <h2 className='text-blue-100 dark:text-white text-lg font-bold hidden md:inline'>ECom App</h2>
+          <img className='h-10 rounded-lg ml-3' src={Logo} alt="logo" />
+          <h2 className='text-white ml-3 dark:text-white text-lg font-bold hidden md:inline'>ECom App</h2>
         </div>
-        <input className='p-2 rounded-lg z-20 md:w-80 ' type="text" placeholder='Search' />
+        <Link to={'/products'}><h2 className='font-bold text-white hidden md:inline'>Products</h2> </Link>
+        <Input className='p-2 rounded-lg w-auto md:w-[50vw]' type="text" placeholder='Search' />
+        <div className='hidden md:inline'>
+          <ModeToggle type='icon' />
+        </div>
         <div className='flex space-x-3'>
           <div className='space-x-3 hidden md:flex'>
             <DropdownMenu>
@@ -77,7 +82,7 @@ function Header() {
           <FontAwesomeIcon className='text-white text-2xl cursor-pointer ' icon={faShoppingCart} />
         </div>
       </nav>
-
+      {/* Side Navigation */}
       <Sheet className='h-40' >
         <SheetTrigger > <FontAwesomeIcon className='text-white text-2xl cursor-pointer ms-3 md:hidden fixed mt-2.5 z-20' icon={faBars} onClick={menuHandler} /></SheetTrigger>
         <SheetContent className={`md:hidden `} side='left'>
@@ -100,23 +105,19 @@ function Header() {
           }
           <hr />
           <br />
-          <div className='flex flex-col'>
-            <Link to={'/'}> <SheetClose ><h2 className='font-bold'>Home</h2> </SheetClose></Link>
-            <Link to={'/products'}> <SheetClose ><h2 className='font-bold'>Products</h2> </SheetClose></Link>
+          <div className='flex flex-col space-y-4 p-2 justify-center'>
+            <ModeToggle />
+            <Link to={'/'} className='self-start'> <SheetClose ><h2 className='font-bold'>Home</h2> </SheetClose></Link>
+            <Link to={'/products'} className='self-start'> <SheetClose ><h2 className='font-bold'>Products</h2> </SheetClose></Link>
 
             <h2 className='font-bold'>Orders</h2>
             <h2 className='font-bold'>Cart</h2>
             <h2 className='font-bold'>Settings</h2>
-            {user && <span onClick={() => { clerk.signOut(); }}>Log Out</span>}
+            {user && <span className='self-start text-red-500 font-medium' onClick={() => { clerk.signOut(); }}>  <SheetClose >Log Out</SheetClose></span>}
+
           </div>
         </SheetContent>
       </Sheet>
-
-
-
-
-
-
     </div >
   )
 }
