@@ -30,6 +30,7 @@ import { Input } from "@/components/ui/input"
 
 
 
+
 function Header() {
 
 
@@ -54,7 +55,7 @@ function Header() {
     <div>
       <nav className='h-20 w-full bg-blue-700 flex items-center justify-around fixed z-10'>
         <div className='md:flex items-center cursor-pointer ms-6' onClick={() => navigate('/')}>
-          <img className='h-10 rounded-lg ml-3' src={Logo} alt="logo" />
+          <img className='h-10 rounded-lg ml-6' src={Logo} alt="logo" />
           <h2 className='text-white ml-3 dark:text-white text-lg font-bold hidden md:inline'>ECom App</h2>
         </div>
         <Link to={'/products'}><h2 className='font-bold text-white hidden md:inline'>Products</h2> </Link>
@@ -84,7 +85,7 @@ function Header() {
       </nav>
       {/* Side Navigation */}
       <Sheet className='h-40' >
-        <SheetTrigger > <FontAwesomeIcon className='text-white text-2xl cursor-pointer ms-3 md:hidden fixed mt-2.5 z-20' icon={faBars} onClick={menuHandler} /></SheetTrigger>
+        <SheetTrigger > <FontAwesomeIcon className='text-white text-3xl cursor-pointer ms-3 md:hidden fixed mt-2 z-20' icon={faBars} onClick={menuHandler} /></SheetTrigger>
         <SheetContent className={`md:hidden `} side='left'>
           <SheetHeader>
             <div className=' flex items-center cursor-pointer' onClick={() => navigate('/')}>
@@ -95,8 +96,8 @@ function Header() {
           </SheetHeader>
           <br />
           {user ?
-            <div>
-              <span className='block text-left'> Welcome</span>
+            <div className='m-3'>
+              <span className='block text-left'> Welcome!</span>
               <span className='block text-left'>{user?.primaryEmailAddress.emailAddress}</span>
             </div>
             : <SheetClose >
@@ -106,13 +107,15 @@ function Header() {
           <hr />
           <br />
           <div className='flex flex-col space-y-4 p-2 justify-center'>
-            <ModeToggle />
+
+            <ModeToggle type='switch' />
             <Link to={'/'} className='self-start'> <SheetClose ><h2 className='font-bold'>Home</h2> </SheetClose></Link>
             <Link to={'/products'} className='self-start'> <SheetClose ><h2 className='font-bold'>Products</h2> </SheetClose></Link>
 
             <h2 className='font-bold'>Orders</h2>
             <h2 className='font-bold'>Cart</h2>
             <h2 className='font-bold'>Settings</h2>
+            <hr />
             {user && <span className='self-start text-red-500 font-medium' onClick={() => { clerk.signOut(); }}>  <SheetClose >Log Out</SheetClose></span>}
 
           </div>
