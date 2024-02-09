@@ -53,7 +53,7 @@ function Header() {
 
   return (
     <div>
-      <nav className='h-20 w-full bg-blue-700 flex items-center justify-around fixed z-10'>
+      <nav className='h-20 w-full bg-black dark:bg-blue-950 flex items-center justify-around fixed z-10'>
         <div className='md:flex items-center cursor-pointer ms-6' onClick={() => navigate('/')}>
           <img className='h-10 rounded-lg ml-6' src={Logo} alt="logo" />
           <h2 className='text-white ml-3 dark:text-white text-lg font-bold hidden md:inline'>ECom App</h2>

@@ -9,8 +9,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useTheme } from "@/components/theme-provider"
 import { Switch } from "@/components/ui/switch"
-import { useRef, useState } from "react"
-
 
 export function ModeToggle({ type }) {
     const { theme, setTheme } = useTheme()
@@ -21,7 +19,7 @@ export function ModeToggle({ type }) {
             {type == 'switch' ?
                 <div className="flex items-end justify-between">
                     <span>Toggle Theme :  {theme}  </span>
-                    <Switch checked={theme === 'dark'} onCheckedChange={() => { setTheme(theme==='light' ? 'dark' : 'light') }} />
+                    <Switch checked={theme === 'dark'} onCheckedChange={() => { setTheme(theme === 'light' ? 'dark' : 'light') }} />
                 </div>
                 : <DropdownMenu>
                     <DropdownMenuTrigger asChild>

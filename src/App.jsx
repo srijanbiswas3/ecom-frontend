@@ -12,20 +12,20 @@ import ProductDetails from "./pages/ProductDetails/ProductDetails";
 
 
 export default function App() {
-   const user = useUser()
+  const user = useUser()
 
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <div >
-       
+
         <Router>
-        <Header/>
+          <Header />
           <Routes>
-            {/* <Route path="/login" element={<Login />} /> */}
-            <Route path="/"  element={<Home />} />
-            <Route path="/products"  element={<Products/>} />
-            <Route path="/products/:productId"  element={<ProductDetails/>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:productId" element={<ProductDetails />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
