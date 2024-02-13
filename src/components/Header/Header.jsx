@@ -1,9 +1,3 @@
-import React, { useEffect, useState } from 'react'
-import { ModeToggle } from '../mode-toggle'
-import Logo from '../../assets/logo.webp'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faUser, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { useUser, useClerk } from '@clerk/clerk-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,44 +5,52 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Link, useNavigate } from 'react-router-dom';
-
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
-  SheetDescription,
   SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  SheetClose
-} from "@/components/ui/sheet"
-
-
-import { Input } from "@/components/ui/input"
-
-
-
-
+  SheetTrigger
+} from "@/components/ui/sheet";
+import UserContext from '@/context/UserContext';
+import { faBars, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
+import Logo from '../../assets/logo.webp';
+import { ModeToggle } from '../mode-toggle';
 
 function Header() {
 
+  const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
-  const clerk = useClerk();
 
-  const { isSignedIn, user, isLoaded } = useUser();
+  const cookies = new Cookies();
 
   const [showMenu, setShowMenu] = useState(false)
 
   useEffect(() => {
-    if (!isSignedIn)
-      clerk.openSignIn();
+
+    if (cookies.get('access_token') == null) {
+      navigate('/login')
+    }
   }, [])
 
   const menuHandler = () => {
     setShowMenu(!showMenu)
+  }
 
+  const handleSignIn = () => {
+    navigate('/login')
+
+  }
+  const handleLogOut = () => {
+    cookies.remove('access_token')
+    localStorage.removeItem('refresh_token')
   }
 
   return (
@@ -71,11 +73,11 @@ function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuLabel>{user?.primaryEmailAddress.emailAddress}</DropdownMenuLabel>
+                <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profile</DropdownMenuItem>
-                {!isSignedIn && <DropdownMenuItem onClick={() => { clerk.openSignIn(); }}>Log In</DropdownMenuItem>}
-                {isSignedIn && <DropdownMenuItem onClick={() => { clerk.signOut(); }}>Log Out</DropdownMenuItem>}
+                {/* {!isSignedIn && <DropdownMenuItem onClick={handleSignIn}>Log In</DropdownMenuItem>}
+                {isSignedIn && <DropdownMenuItem onClick={handleLogOut}>Log Out</DropdownMenuItem>} */}
               </DropdownMenuContent>
             </DropdownMenu>
             <h2 className='text-white font-bold'>Orders</h2>
@@ -98,10 +100,10 @@ function Header() {
           {user ?
             <div className='m-3'>
               <span className='block text-left'> Welcome!</span>
-              <span className='block text-left'>{user?.primaryEmailAddress.emailAddress}</span>
+              <span className='block text-left'>{user?.name}</span>
             </div>
             : <SheetClose >
-              <span className='block text-left' onClick={() => { clerk.openSignIn(); }}> Login</span>
+              <span className='block text-left m-2 font-bold' onClick={handleSignIn}> Login</span>
             </SheetClose>
           }
           <hr />
@@ -116,7 +118,7 @@ function Header() {
             <h2 className='font-bold'>Cart</h2>
             <h2 className='font-bold'>Settings</h2>
             <hr />
-            {user && <span className='self-start text-red-500 font-medium' onClick={() => { clerk.signOut(); }}>  <SheetClose >Log Out</SheetClose></span>}
+            {user && <span className='self-start text-red-500 font-medium' onClick={handleLogOut}>  <SheetClose >Log Out</SheetClose></span>}
 
           </div>
         </SheetContent>

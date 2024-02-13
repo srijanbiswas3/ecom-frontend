@@ -10,9 +10,10 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useNavigate } from 'react-router-dom'
-
+import Cookies from 'universal-cookie';
 
 function Products() {
+  const cookies = new Cookies();
 
   const navigate = useNavigate();
   const [pages, setPages] = useState([])
@@ -27,6 +28,10 @@ function Products() {
   const pagess = []
   useEffect(() => {
     getProducts()
+    const accessToken = cookies.get("access_token");
+    console.log(accessToken)
+
+
     // for (let i = 1; i < 100; i++) {
     //   sample.push({
     //     id: i,

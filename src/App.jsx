@@ -4,20 +4,20 @@ import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-route
 import Login from './pages/Login/Login';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
-import { useUser } from "@clerk/clerk-react";
-import { useEffect } from "react";
+// import { useUser } from "@clerk/clerk-react";
 import Home from "./pages/Home/Home";
 import Products from "./pages/Products/Products";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
-
+import { Toaster } from "@/components/ui/sonner"
+import UserContextProvider from "./context/UserContextProvider";
 
 export default function App() {
-  const user = useUser()
+  // const user = useUser()
 
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <div >
+      <UserContextProvider >
 
         <Router>
           <Header />
@@ -30,7 +30,8 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </Router>
-      </div>
+      </UserContextProvider>
+      <Toaster />
     </ThemeProvider>
   )
 }

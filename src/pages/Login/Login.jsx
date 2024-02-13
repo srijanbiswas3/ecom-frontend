@@ -1,10 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-
-import Home from '../Home/Home';
-import { Form, useNavigate } from 'react-router-dom';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from "@/components/ui/label"
 import {
   Card,
   CardContent,
@@ -12,16 +6,21 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
+import { Input } from '@/components/ui/input';
+import { Label } from "@/components/ui/label";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/components/ui/tabs";
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { login, signUp } from '@/api/LoginApi';
+import UserContext from '@/context/UserContext';
+import { toast } from "sonner";
 import Cookies from 'universal-cookie';
 
 
@@ -30,18 +29,26 @@ import Cookies from 'universal-cookie';
 const Login = () => {
   const cookies = new Cookies();
 
+  const { setUser } = useContext(UserContext);
+
   const navigate = useNavigate();
 
 
   const [lEmail, setLEmail] = useState('')
   const [lPassword, setLPassword] = useState('')
   const [signupData, setSignupData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
-    address: '',
     phone: '',
-    role: 'USER'
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    country: '',
+    state: '',
+    zipCode: '',
+    userType: 'CUSTOMER'
   });
   const [activeTab, setActiveTab] = useState('login');
 
@@ -56,16 +63,23 @@ const Login = () => {
     console.log(lEmail + " and " + lPassword)
 
     login(lEmail, lPassword).then(resp => {
-      console.log(resp.accessToken, resp.refreshToken);
+      if (resp == null) {
+        toast("Error Logging in. Please check User or Password ");
+        return;
+      }
+      const userInfo = JSON.parse(resp.userInfo);
+      console.log(userInfo.name);
+      setUser(userInfo)
+
       // Set the access token as an HTTP-only cookie
       cookies.set('access_token', resp.accessToken, {
         path: '/',
-        httpOnly: false,
+        httpOnly: true,
         secure: false // Set to true if using HTTPS
       });
       localStorage.setItem('refresh_token', resp.refreshToken);
-    }).then(() => navigate('/'));
-
+      navigate('/')
+    })
   }
 
   const handleSignUp = () => {
@@ -106,7 +120,7 @@ const Login = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button onClick={() => { handleLogin() }}>Login</Button>
+                <Button onClick={handleLogin}>Login</Button>
               </CardFooter>
             </Card>
           </TabsContent>
@@ -120,9 +134,17 @@ const Login = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="sname" name="name" type="text" placeholder="Enter Full Name Here..." value={signupData.name} onChange={handleInputChange} />
+                <div className='flex space-x-2'>
+                  <div className="space-y-1">
+                    <Label htmlFor="name">First Name</Label>
+                    <Input id="sfname" name="firstName" type="text" placeholder="First Name..." value={signupData.firstName} onChange={handleInputChange} />
+
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="name">Last Name</Label>
+                    <Input id="slname" name="lastName" type="text" placeholder="Last Name..." value={signupData.lastName} onChange={handleInputChange} />
+
+                  </div>
                 </div>
 
                 <div className="space-y-1">
@@ -133,17 +155,37 @@ const Login = () => {
                   <Label htmlFor="password">Password</Label>
                   <Input id="spassword" name="password" type="password" placeholder="Enter Password Here..." value={signupData.password} onChange={handleInputChange} />
                 </div>
-                {/* <div className="space-y-1">
-                  <Label htmlFor="password">Confirm Password</Label>
-                  <Input id="spassword" type="password" placeholder="Confirm Password Here..." value={signupData.password} onChange={handleInputChange} />
-                </div> */}
                 <div className="space-y-1">
                   <Label htmlFor="phone">Phone</Label>
                   <Input id="sphone" name="phone" type="text" placeholder="Enter Phone Here..." value={signupData.phone} onChange={handleInputChange} />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="saddress">Address</Label>
-                  <Textarea id="saddress" name="address" type="text" placeholder="Enter Address Here..." value={signupData.address} onChange={handleInputChange} />
+                  <Label htmlFor="addressLine1">Address Line 1</Label>
+                  <Input id="addressLine1" name="addressLine1" type="text" placeholder="Address Line 1 ..." value={signupData.addressLine1} onChange={handleInputChange} />
+                  <Label htmlFor="addressLine2">Address Line 2</Label>
+                  <Input id="addressLine2" name="addressLine2" type="text" placeholder="Address Line 2 ..." value={signupData.addressLine2} onChange={handleInputChange} />
+                  <div className='flex space-x-2'>
+                    <div>
+
+                      <Label htmlFor="city">City</Label>
+                      <Input id="city" name="city" type="text" placeholder="City..." value={signupData.city} onChange={handleInputChange} />
+                    </div>
+                    <div>
+
+                      <Label htmlFor="state">State</Label>
+                      <Input id="state" name="state" type="text" placeholder="State..." value={signupData.state} onChange={handleInputChange} />
+                    </div>
+                  </div>
+                  <div className='flex space-x-2'>
+                    <div>
+                      <Label htmlFor="country">Coutry</Label>
+                      <Input id="country" name="country" type="text" placeholder="Country..." value={signupData.country} onChange={handleInputChange} />
+                    </div>
+                    <div>
+                      <Label htmlFor="zipCode">Zip Code</Label>
+                      <Input id="zipCode" name="zipCode" type="text" placeholder="Zip Code..." value={signupData.zipCode} onChange={handleInputChange} />
+                    </div>
+                  </div>
                 </div>
 
               </CardContent>
@@ -154,7 +196,6 @@ const Login = () => {
           </TabsContent>
         </Tabs>
 
-        <hr />
 
       </div>
 

@@ -11,7 +11,12 @@ const login = async (email, password) => {
             email: email,
             password: password
         });
-        return response.data;
+        const result = response.data;
+        if (result && 'accessToken' in result) {
+            return result;
+        } else {
+            return null; // or handle the case where accessToken is missing
+        }
     } catch (error) {
         console.error("Error logging in:", error);
         return null;
@@ -19,9 +24,26 @@ const login = async (email, password) => {
 }
 
 
+
+
 const signUp = async (signupData) => {
     try {
-        const response = await axios.post('http://localhost:8080/signup', signupData);
+        const response = await axios.post('http://localhost:8080/signup', {
+            email: signupData.email,
+            password: signupData.password,
+            firstName: signupData.firstName,
+            lastName: signupData.lastName,
+            phoneNumber: signupData.phone,
+            userType:signupData.userType,
+            address: {
+                addressLine1: signupData.addressLine1,
+                addressLine2: signupData.addressLine2,
+                city: signupData.city,
+                state: signupData.state,
+                zipCode: signupData.zipCode,
+                country: signupData.country
+            }
+        });
         console.log(response.data);
         const result = response.data;
         return result.endsWith("success");
@@ -35,4 +57,4 @@ const signUp = async (signupData) => {
 // axios.get('/api/data')
 //   .then(response => console.log(response.data))
 //   .catch(error => console.error(error));
-export { login, check,signUp }
+export { check, login, signUp };
