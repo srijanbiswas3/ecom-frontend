@@ -1,3 +1,5 @@
+import { logOut } from "@/api/LoginApi";
+import { getUserInfo } from "@/api/UserApi";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,31 +16,20 @@ import {
   SheetHeader,
   SheetTrigger
 } from "@/components/ui/sheet";
-import UserContext from '@/context/UserContext';
+import { LoginContext } from "@/context/LoginContext";
+import { UserContext } from "@/context/UserContext";
 import { faBars, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'universal-cookie';
 import Logo from '../../assets/logo.webp';
 import { ModeToggle } from '../mode-toggle';
 
 function Header() {
-
-  const { user } = useContext(UserContext);
-
+  const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-
-  const cookies = new Cookies();
-
   const [showMenu, setShowMenu] = useState(false)
-
-  useEffect(() => {
-
-    if (cookies.get('access_token') == null) {
-      navigate('/login')
-    }
-  }, [])
 
   const menuHandler = () => {
     setShowMenu(!showMenu)
@@ -49,8 +40,14 @@ function Header() {
 
   }
   const handleLogOut = () => {
-    cookies.remove('access_token')
-    localStorage.removeItem('refresh_token')
+
+    logOut().then(() => {
+      console.log("User Logged Out"); setUser(null);
+      localStorage.removeItem('refresh_token')
+      setIsLoggedIn(false)
+      localStorage.removeItem('isLoggedIn');
+    }).catch(e => console.log(e));
+
   }
 
   return (
@@ -68,16 +65,16 @@ function Header() {
         <div className='flex space-x-3'>
           <div className='space-x-3 hidden md:flex'>
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger >
                 <FontAwesomeIcon className='text-white text-2xl cursor-pointer' icon={faUser} />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+                <DropdownMenuLabel>{user?.firstName}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profile</DropdownMenuItem>
-                {/* {!isSignedIn && <DropdownMenuItem onClick={handleSignIn}>Log In</DropdownMenuItem>}
-                {isSignedIn && <DropdownMenuItem onClick={handleLogOut}>Log Out</DropdownMenuItem>} */}
+                {!isLoggedIn && <DropdownMenuItem onClick={handleSignIn}>Log In</DropdownMenuItem>}
+                {isLoggedIn && <DropdownMenuItem onClick={handleLogOut}>Log Out</DropdownMenuItem>}
               </DropdownMenuContent>
             </DropdownMenu>
             <h2 className='text-white font-bold'>Orders</h2>
@@ -100,7 +97,7 @@ function Header() {
           {user ?
             <div className='m-3'>
               <span className='block text-left'> Welcome!</span>
-              <span className='block text-left'>{user?.name}</span>
+              <span className='block text-left'>{user?.firstName}</span>
             </div>
             : <SheetClose >
               <span className='block text-left m-2 font-bold' onClick={handleSignIn}> Login</span>

@@ -15,25 +15,23 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { login, signUp } from '@/api/LoginApi';
-import UserContext from '@/context/UserContext';
+import { getUserInfo } from '@/api/UserApi';
+import { LoginContext } from '@/context/LoginContext';
+import { UserContext } from '@/context/UserContext';
 import { toast } from "sonner";
-import Cookies from 'universal-cookie';
 
 
 
 
 const Login = () => {
-  const cookies = new Cookies();
-
-  const { setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
-
-
+  const { user, setUser } = useContext(UserContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
   const [lEmail, setLEmail] = useState('')
   const [lPassword, setLPassword] = useState('')
   const [signupData, setSignupData] = useState({
@@ -52,6 +50,11 @@ const Login = () => {
   });
   const [activeTab, setActiveTab] = useState('login');
 
+  useEffect(() => {
+    isLoggedIn && navigate('/')
+  }, [])
+
+
   const handleInputChange = (event) => {
     setSignupData({
       ...signupData,
@@ -62,24 +65,31 @@ const Login = () => {
   const handleLogin = () => {
     console.log(lEmail + " and " + lPassword)
 
-    login(lEmail, lPassword).then(resp => {
-      if (resp == null) {
-        toast("Error Logging in. Please check User or Password ");
-        return;
-      }
-      const userInfo = JSON.parse(resp.userInfo);
-      console.log(userInfo.name);
-      setUser(userInfo)
+    login(lEmail, lPassword)
+      .then(resp => {
+        if (resp == null) {
+          toast("Error Logging in. Please check User or Password ");
+          throw new Error("Error Logging in");
+        }
 
-      // Set the access token as an HTTP-only cookie
-      cookies.set('access_token', resp.accessToken, {
-        path: '/',
-        httpOnly: true,
-        secure: false // Set to true if using HTTPS
+        localStorage.setItem('refresh_token', resp.refreshToken);
+        setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', true);
+
+        // Chain the next promise here
+        return getUserInfo();
+      })
+      .then(resp => {
+        console.log(resp);
+        setUser(resp);
+        navigate('/');
+      })
+      .catch((e) => {
+        console.log(e);
+        setIsLoggedIn(false);
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('refresh_token');
       });
-      localStorage.setItem('refresh_token', resp.refreshToken);
-      navigate('/')
-    })
   }
 
   const handleSignUp = () => {
@@ -91,8 +101,12 @@ const Login = () => {
 
   }
 
+
   return (
+
+
     <div className='container mt-32'>
+
       <div className='space-y-4 items-center  flex flex-col'>
         <Tabs defaultValue='login' value={activeTab} className="w-[400px] m-2 p-3">
           <TabsList className="grid w-full grid-cols-2">
@@ -198,6 +212,7 @@ const Login = () => {
 
 
       </div>
+
 
     </div>
   );

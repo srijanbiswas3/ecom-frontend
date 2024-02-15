@@ -9,28 +9,31 @@ import Home from "./pages/Home/Home";
 import Products from "./pages/Products/Products";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import { Toaster } from "@/components/ui/sonner"
-import UserContextProvider from "./context/UserContextProvider";
+
+import { LoginContextProvider } from "./context/LoginContext";
+import { UserContextProvider } from "./context/UserContext";
+
+
 
 export default function App() {
-  // const user = useUser()
-
-
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <UserContextProvider >
+      <LoginContextProvider >
+        <UserContextProvider>
+          <Router>
+            <Header />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/products/:productId" element={<ProductDetails />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </Router>
+        </UserContextProvider>
+      </LoginContextProvider>
 
-        <Router>
-          <Header />
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/:productId" element={<ProductDetails />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
-        </Router>
-      </UserContextProvider>
       <Toaster />
     </ThemeProvider>
   )

@@ -7,12 +7,14 @@ const check = async () => {
 
 const login = async (email, password) => {
     try {
+        axios.defaults.withCredentials = true
         const response = await axios.post('http://localhost:8080/login', {
             email: email,
             password: password
         });
         const result = response.data;
         if (result && 'accessToken' in result) {
+            console.error("no access token:", error);
             return result;
         } else {
             return null; // or handle the case where accessToken is missing
@@ -34,7 +36,7 @@ const signUp = async (signupData) => {
             firstName: signupData.firstName,
             lastName: signupData.lastName,
             phoneNumber: signupData.phone,
-            userType:signupData.userType,
+            userType: signupData.userType,
             address: {
                 addressLine1: signupData.addressLine1,
                 addressLine2: signupData.addressLine2,
@@ -53,8 +55,10 @@ const signUp = async (signupData) => {
     }
 }
 
-// axios.defaults.withCredentials = true;
-// axios.get('/api/data')
-//   .then(response => console.log(response.data))
-//   .catch(error => console.error(error));
-export { check, login, signUp };
+const logOut = async () => {
+    axios.defaults.withCredentials = true
+    await axios.post('http://localhost:8080/logout');
+}
+
+export { check, login, signUp,logOut };
+
