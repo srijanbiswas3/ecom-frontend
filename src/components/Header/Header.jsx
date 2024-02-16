@@ -1,5 +1,4 @@
 import { logOut } from "@/api/LoginApi";
-import { getUserInfo } from "@/api/UserApi";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +19,7 @@ import { LoginContext } from "@/context/LoginContext";
 import { UserContext } from "@/context/UserContext";
 import { faBars, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/logo.webp';
 import { ModeToggle } from '../mode-toggle';

@@ -12,11 +12,13 @@ const login = async (email, password) => {
             email: email,
             password: password
         });
+        
         const result = response.data;
-        if (result && 'accessToken' in result) {
-            console.error("no access token:", error);
+        console.log(response.data)
+        if (result || result==='') {
             return result;
         } else {
+            console.error("no refresh token:", error);
             return null; // or handle the case where accessToken is missing
         }
     } catch (error) {
