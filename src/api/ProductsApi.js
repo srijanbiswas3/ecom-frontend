@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 
-const MASTER_URL = 'https://api-ap-south-1.hygraph.com/v2/cls1rkjjp2v9y01teefrmdt5y/master'
+const MASTER_URL = import.meta.env.VITE_HYGRAPH_MASTER_URL
 
 const GetProducts = async () => {
   const products = gql`

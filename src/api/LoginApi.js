@@ -1,14 +1,16 @@
 import axios from "axios";
 
+const baseUrl=import.meta.env.VITE_BASE_URL;
+
 const check = async () => {
-    const response = await axios.get('http://localhost:8080/');
+    const response = await axios.get(`${baseUrl}`);
     console.log(response.data);
 }
 
 const login = async (email, password) => {
     try {
         axios.defaults.withCredentials = true
-        const response = await axios.post('http://localhost:8080/login', {
+        const response = await axios.post(`${baseUrl}/login`, {
             email: email,
             password: password
         });
