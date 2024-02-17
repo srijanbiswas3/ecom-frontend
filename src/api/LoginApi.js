@@ -34,7 +34,7 @@ const login = async (email, password) => {
 
 const signUp = async (signupData) => {
     try {
-        const response = await axios.post('http://localhost:8080/signup', {
+        const response = await axios.post(`${baseUrl}/signup`, {
             email: signupData.email,
             password: signupData.password,
             firstName: signupData.firstName,
@@ -61,7 +61,7 @@ const signUp = async (signupData) => {
 
 const logOut = async () => {
     axios.defaults.withCredentials = true
-    await axios.post('http://localhost:8080/logout');
+    await axios.post(`${baseUrl}/logout`);
 }
 
 export { check, login, signUp,logOut };

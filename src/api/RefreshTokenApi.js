@@ -1,6 +1,6 @@
 import axios from "axios";
 
-
+const baseUrl=import.meta.env.VITE_BASE_URL;
 const refreshTokenAndFetch = async (url, body, options) => {
     try {
         // Make the original request
@@ -18,7 +18,7 @@ const refreshTokenAndFetch = async (url, body, options) => {
             console.error('Unauthorized error:', error);
             const refreshToken = localStorage.getItem('refresh_token');
             axios.defaults.withCredentials = true
-            const refreshResponse = await axios.post('http://localhost:8080/refresh', {
+            const refreshResponse = await axios.post(`${baseUrl}/refresh`, {
                 refreshToken: refreshToken
             }
             );
