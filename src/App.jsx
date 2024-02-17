@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-route
 import Login from './pages/Login/Login';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
-// import { useUser } from "@clerk/clerk-react";
 import Home from "./pages/Home/Home";
 import Products from "./pages/Products/Products";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";

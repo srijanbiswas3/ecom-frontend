@@ -1,19 +1,19 @@
-import { GetProducts } from '@/api/ProductsApi'
-import React, { useEffect, useState } from 'react'
+import { GetProducts } from '@/api/ProductsApi';
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-import { useNavigate } from 'react-router-dom'
-import Cookies from 'universal-cookie';
+  PaginationPrevious
+} from "@/components/ui/pagination";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 function Products() {
-  const cookies = new Cookies();
+
 
   const navigate = useNavigate();
   const [pages, setPages] = useState([])
@@ -28,19 +28,6 @@ function Products() {
   const pagess = []
   useEffect(() => {
     getProducts()
-    const accessToken = cookies.get("access_token");
-    console.log(accessToken)
-
-
-    // for (let i = 1; i < 100; i++) {
-    //   sample.push({
-    //     id: i,
-    //     name: `Product ${i}`,
-    //     price: (Math.random() * 100).toFixed(2), // Random price with 2 decimal places
-    //   });
-    // }
-    // setProducts(sample)
-    // console.log(sample)
     for (let i = 1; i < Math.ceil(products.length / noOfItems); i++) {
       pagess.push(i)
     }
