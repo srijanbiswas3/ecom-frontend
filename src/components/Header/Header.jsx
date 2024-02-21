@@ -78,7 +78,7 @@ function Header() {
             </DropdownMenu>
             <h2 className='text-white font-bold'>Orders</h2>
           </div>
-          <FontAwesomeIcon className='text-white text-2xl cursor-pointer ' icon={faShoppingCart} />
+          <FontAwesomeIcon className='text-white text-2xl cursor-pointer ' icon={faShoppingCart} onClick={()=>navigate('/cart')}/>
         </div>
       </nav>
       {/* Side Navigation */}

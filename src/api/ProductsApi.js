@@ -1,6 +1,8 @@
-import { request, gql } from 'graphql-request'
+import axios from 'axios'
+import { gql, request } from 'graphql-request'
 
 const MASTER_URL = import.meta.env.VITE_HYGRAPH_MASTER_URL
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const GetProducts = async () => {
   const products = gql`
@@ -60,4 +62,36 @@ const GetProduct = async (productId) => {
   return result;
 }
 
-export { GetProducts, GetProduct }
+const GetProductImages = async (imageId) => {
+  const productImages = gql`
+  query ProductImages {
+    productImageMapping(where: {id: "${imageId}"}) {
+      id
+      productImages {
+        id
+        url
+      }
+      name
+    }
+  }
+  
+  
+      `
+
+  const result = await request(MASTER_URL, productImages)
+  return result;
+}
+
+const getAllProducts = async () => {
+  const response = await axios.get(`${baseUrl}/products`)
+  console.log(response);
+
+  if (!response || !response.data) {
+    return null
+  }
+  return response.data;
+}
+
+
+export { GetProduct, GetProducts, GetProductImages,getAllProducts }
+

@@ -22,6 +22,7 @@ const refreshTokenAndFetch = async (url, body, options) => {
                 refreshToken: refreshToken
             }
             );
+            console.log("New Refreshtoken : ",refreshResponse)
             if (refreshResponse.status === 200) {
                 localStorage.setItem('refresh_token', refreshResponse.data.refreshToken);
                 // Retry the original request with updated token

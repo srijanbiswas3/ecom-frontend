@@ -1,4 +1,7 @@
-import { GetProducts } from '@/api/ProductsApi';
+import { getAllProducts } from '@/api/ProductsApi';
+import { GetAverageRatingsGroupByProductId } from '@/api/ReviewApi';
+import Filter from '@/components/Filter/Filter';
+import ProductCard from '@/components/ProductCard/ProductCard';
 import {
   Pagination,
   PaginationContent,
@@ -8,6 +11,7 @@ import {
 } from "@/components/ui/pagination";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -24,37 +28,68 @@ function Products() {
     startItem: 0,
     endItem: noOfItems
   })
+  const [ratings, setRatings] = useState()
   const sample = []
   const pagess = []
   useEffect(() => {
     getProducts()
+    getRatings()
+
+
     for (let i = 1; i < Math.ceil(products.length / noOfItems); i++) {
       pagess.push(i)
     }
     setPages(pagess)
 
+
   }, [])
 
 
   const getProducts = () => {
-    GetProducts().then(resp => {
-      console.log(resp.products);
-      setProducts(resp.products)
-    })
-  }
+
+    getAllProducts()
+      .then(resp => {
+        console.log(resp);
+        setProducts(resp)
+      })
+
+      .catch(error => {
+        console.error("Error fetching products", error);
+
+      });
+
+  };
+
+
+  const getRatings = () => {
+
+    GetAverageRatingsGroupByProductId()
+      .then(resp => {
+        console.log(resp);
+        setRatings(resp)
+      })
+
+      .catch(error => {
+        console.error("Error fetching products", error);
+
+      });
+
+  };
+
 
   return (
     <div className=' container pt-20'>
-      <div className='h-screen flex space-x-5 justify-around flex-wrap '>
-        {products.slice(itemCount.startItem, itemCount.endItem).map((product, index) => (
-          <div className='h-96 w-60 shadow-xl flex flex-col my-5' onClick={() => { navigate(`${product.id}`, { productId: product.id }) }} key={product?.id}>
-            <img src={product?.images[1]?.url} alt="" className='-z-10 w-full h-64 object-cover scale-90 transition-transform duration-300 hover:scale-100' />
-            <h1 className='text-center'>{product.name}</h1>
-          </div>
+      <div className='flex'>
+        <Filter />
+        <div className=' w-full right h-screen flex flex-wrap ml-5 '>
+          {products.slice(itemCount.startItem, itemCount.endItem).map((product, index) => (
 
-        ))}
+            <ProductCard product={product} key={product?.id} rating={ratings?.[product?.id]} />
+
+
+          ))}
+        </div>
       </div>
-
       <div className='m-5'>
         <Pagination>
           <PaginationContent>
