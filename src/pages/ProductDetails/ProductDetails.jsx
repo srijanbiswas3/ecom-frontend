@@ -1,3 +1,5 @@
+import { GetProductImages, getProduct } from "@/api/ProductsApi";
+import { GetAverageRatingByProductId } from "@/api/ReviewApi";
 import Reviews from "@/components/Reviews/Reviews";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,11 +18,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { useCart } from "@/context/CartContext";
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import Zoom from 'react-img-zoom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Rating } from 'react-simple-star-rating';
+import { toast } from "sonner";
 
 function ProductDetails() {
+    const { addToCart } = useCart()
 
     const { state } = useLocation()
     const [product, setProduct] = useState()
@@ -28,13 +34,27 @@ function ProductDetails() {
     const [api, setApi] = useState()
     const [current, setCurrent] = useState(0)
     const [count, setCount] = useState(0)
+    const [qty, setQty] = useState(1)
+    const [rating, setRating] = useState()
+    const [size, setSize] = useState()
 
+    const navigate = useNavigate();
 
     useEffect(() => {
         console.log(state)
-        // getProduct()
-        setProduct(state?.product)
-        setProductImages(state?.productImages)
+
+        getProduct(state?.productId).then(resp => {
+            setProduct(resp)
+            GetProductImages(resp?.imageURL).then(resp => {
+                console.log(resp);
+                setProductImages(resp?.productImageMapping?.productImages)
+            })
+        })
+        GetAverageRatingByProductId(state?.productId).then(resp => {
+            console.log(resp);
+            setRating(resp)
+        })
+
 
     }, [])
 
@@ -51,9 +71,28 @@ function ProductDetails() {
         })
     }, [api])
 
-    // const getProduct = () => {
-    //     setProduct(params.product)
-    // }
+    const handleAddToCart = () => {
+
+        const added = addToCart(product, productImages, qty,size)
+        if (added) {
+            toast("Item Added to Cart", {
+                action: {
+                    label: "View Cart",
+                    onClick: () => navigate('/cart'),
+                },
+            })
+        }
+        else {
+            toast("Item Already In Cart", {
+
+                action: {
+                    label: "View Cart",
+                    onClick: () => navigate('/cart'),
+                },
+            })
+        }
+
+    }
 
     return (
         <div className='container  p-10 md:pt-20'>
@@ -65,7 +104,13 @@ function ProductDetails() {
                             {productImages?.map((image, index) => (
 
                                 <CarouselItem key={image?.id} className='flex items-center justify-center md:h-[70vh]'>
-                                    <img className={`scale-90 items-center object-cover `} src={image?.url} alt="" />
+                                    <Zoom
+                                        img={image?.url}
+                                        zoomScale={3}
+                                        width={600}
+                                        height={600}
+                                    />
+                                    {/* <img className={`scale-90 items-center object-cover `} src={image?.url} alt="" /> */}
                                     {/* ${image?.height > image?.width ? 'h-[500px]' : 'w-full'} rounded-xl` */}
 
                                 </CarouselItem>
@@ -95,15 +140,15 @@ function ProductDetails() {
                         <del className=' mr-2'>{product?.price}</del>
                         <span > {Math.ceil((product?.price - product?.discountedPrice) / product?.price * 100)}% Off</span>
                     </div>
-                    {state?.rating ? <div className='flex items-center mb-2 w-full'>
+                    {rating ? <div className='flex items-center mb-2 w-full'>
 
                         <Rating
                             transition
-                            initialValue={state?.rating}
+                            initialValue={rating}
                             readonly
                             allowFraction
                         />
-                        <span className='text-yellow-500'>{state?.rating} stars</span>
+                        <span className='text-yellow-500'>{rating} stars</span>
                     </div>
                         :
                         <div>
@@ -116,11 +161,19 @@ function ProductDetails() {
                     <p className=' mb-2'>Details: {product?.details}</p>
                     <p className=' mb-2'>Color: {product?.color}</p>
                     <p className=' mb-2'>Category: {product?.category.description}</p>
-                    <p className=' mb-2'>Size: {product?.size}</p>
+                    <span className="mb-2">Size: </span>
+                    <div className="flex flex-wrap justify-between m-3 ">
+                        {product?.size.split(',').map((sizeStr, index) => (
+                            <div key={index} className={`border rounded-full text-sm text-center m-2 p-2 h-10 w-16 cursor-pointer ${sizeStr==size?'border-2 border-black font-bold':''}`} onClick={()=>{setSize(sizeStr);console.log(sizeStr)}}>
+                                {sizeStr}
+                            </div>
+                        ))}
 
-                    <Select>
+                    </div>
+
+                    <Select value={qty.toString()} defaultValue={qty.toString()} onValueChange={(value) => { setQty(value) }}>
                         <SelectTrigger className="w-16 m-3">
-                            <SelectValue placeholder="1" />
+                            <SelectValue placeholder="Qty" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup >
@@ -133,16 +186,17 @@ function ProductDetails() {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    <Button className='mr-5'>Buy Now</Button>
-                    <Button variant='secondary' className=''>Add to Cart</Button>
-
+                    <div className="flex">
+                    <Button className='mr-5 h-14 w-1/2 ml-3' onClick={()=>{}}>Buy Now</Button>
+                    <Button variant='secondary' className='mr-5 h-14 w-1/2 ' onClick={handleAddToCart}>Add to Cart</Button>
+                    </div>
                 </div>
             </div>
             <div className=''>
                 Item Details
             </div>
 
-            <Reviews productId={state?.product?.id} rating={state?.rating} />
+            <Reviews productId={state?.productId} rating={rating} />
 
         </div>
 

@@ -15,13 +15,14 @@ import {
   SheetHeader,
   SheetTrigger
 } from "@/components/ui/sheet";
+import { CartContext, useCart } from "@/context/CartContext";
 import { LoginContext } from "@/context/LoginContext";
 import { UserContext } from "@/context/UserContext";
 import { faBars, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from '../../assets/logo.webp';
+import Logo from '../../assets/shoeracklogo.png';
 import { ModeToggle } from '../mode-toggle';
 
 function Header() {
@@ -29,6 +30,8 @@ function Header() {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false)
+
+  const { cartItems } = useCart()
 
   const menuHandler = () => {
     setShowMenu(!showMenu)
@@ -54,7 +57,7 @@ function Header() {
       <nav className='h-20 w-full bg-black dark:bg-blue-950 flex items-center justify-around fixed z-10'>
         <div className='md:flex items-center cursor-pointer ms-6' onClick={() => navigate('/')}>
           <img className='h-10 rounded-lg ml-6' src={Logo} alt="logo" />
-          <h2 className='text-white ml-3 dark:text-white text-lg font-bold hidden md:inline'>ECom App</h2>
+          <h2 className='text-white ml-3 dark:text-white text-lg font-bold hidden md:inline'>ShoeRack</h2>
         </div>
         <Link to={'/products'}><h2 className='font-bold text-white hidden md:inline'>Products</h2> </Link>
         <Input className='p-2 rounded-lg w-auto md:w-[50vw]' type="text" placeholder='Search' />
@@ -65,7 +68,10 @@ function Header() {
           <div className='space-x-3 hidden md:flex'>
             <DropdownMenu>
               <DropdownMenuTrigger >
-                <FontAwesomeIcon className='text-white text-2xl cursor-pointer' icon={faUser} />
+                <>
+                  {user && <span className="text-white m-3 font-bold"> Welcome {user?.firstName}</span>}
+                  <FontAwesomeIcon className='text-white text-2xl cursor-pointer' icon={faUser} />
+                </>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -78,7 +84,8 @@ function Header() {
             </DropdownMenu>
             <h2 className='text-white font-bold'>Orders</h2>
           </div>
-          <FontAwesomeIcon className='text-white text-2xl cursor-pointer ' icon={faShoppingCart} onClick={()=>navigate('/cart')}/>
+          <FontAwesomeIcon className='text-white text-2xl cursor-pointer' icon={faShoppingCart} onClick={() => navigate('/cart')} />
+          <span className="bg-green-300 rounded-full text-center font-medium text-sm h-5 w-5 -mt-3 ">{cartItems.length}</span>
         </div>
       </nav>
       {/* Side Navigation */}
@@ -88,7 +95,7 @@ function Header() {
           <SheetHeader>
             <div className=' flex items-center cursor-pointer' onClick={() => navigate('/')}>
               <img className='h-10 rounded-lg mr-3' src={Logo} alt="logo" />
-              <h2 className='text-black dark:text-white text-lg font-bold'>ECom App</h2>
+              <h2 className='text-black dark:text-white text-lg font-bold'>ShoeRack</h2>
             </div>
 
           </SheetHeader>

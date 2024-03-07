@@ -20,9 +20,9 @@ function ProductCard({ product, rating }) {
     return (
         <>
             {!productImages ? <Skeleton className='items-center  flex flex-col h-96 w-56 border rounded-md scale-90' /> :
-                <div className='items-center  flex flex-col h-96 w-56 border rounded-md scale-90 transition-transform duration-300 hover:scale-100 hover:border' onClick={() => { navigate(`${product.id}`, { state: { product: product, productImages: productImages, rating: rating } }) }}>
+                <div className='cursor-pointer items-center  flex flex-col h-96 w-56 border rounded-md scale-90 transition-transform duration-300 hover:scale-100 hover:border hover:bg-slate-100' onClick={() => { navigate(`${product.id}`, { state: { productId: product?.id } }) }}>
                     <img src={productImages[0]?.url} alt="" className='-z-10 w-full h-64 object-cover scale-90 ' />
-                    <h1 className='text-center'>{product?.name}</h1>
+                    <h1 className='text-center'>{product?.name}({product?.color})</h1>
                     {rating ? <div className='flex gap-2'>
                         <Rating
                             transition

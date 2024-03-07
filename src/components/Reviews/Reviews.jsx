@@ -1,7 +1,8 @@
 import { GetReviewsByProductId } from '@/api/ReviewApi';
 import { useEffect, useState } from 'react';
 import { Rating } from 'react-simple-star-rating';
-function Reviews({ productId,rating }) {
+
+function Reviews({ productId, rating }) {
 
     const [reviews, setReviews] = useState()
 
@@ -17,23 +18,23 @@ function Reviews({ productId,rating }) {
 
     return (
 
-        <div className='flex'>
+        <div className='md:flex'>
 
-            <div className='left w-1/2'>
+            <div className='left md:w-1/2 ml-10'>
                 <h1 className='text-lg font-semibold'>TOTAL RATINGS</h1>
                 <Rating
                     transition
                     initialValue={rating}
-                   
                     readonly
                     allowFraction
                 />
+        
             </div>
-            <div className='right ml-10 w-1/2'>
+            <div className='right ml-10 md:w-1/2'>
                 <h1 className='text-lg font-semibold'>REVIEWS</h1>
                 <hr />
                 {reviews?.map((review) => (
-                    <div className='m-5'>
+                    <div key={review?.id} className='m-5'>
 
                         <div className='flex gap-5  '>
                             <span className='font-medium'>{review?.user?.firstName} {review?.user?.lastName}</span>

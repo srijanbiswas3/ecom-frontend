@@ -38,7 +38,7 @@ function Filter() {
     };
     const [category, setCategory] = useState(catItems)
     return (
-        <div className='left border h-screen w-1/4 p-10 '>
+        <div className='left border h-screen  p-10 '>
 
             <span>Showing results for :</span>
             <br />

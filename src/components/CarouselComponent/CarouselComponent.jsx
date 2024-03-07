@@ -31,14 +31,14 @@ function CarouselComponent() {
       {carousels.length == 0 ? <Skeleton className="h-96  w-screen rounded-xl m-5" />
         : <Carousel plugins={[
           Autoplay({
-            delay: 2000,
+            delay: 3000,
           }),
         ]}>
           <CarouselContent>
             {carousels.map((carousel, index) => (
 
-              <CarouselItem key={carousel?.id} className='h-96 flex items-center justify-center'>
-                <img className='h-96 items-center object-center rounded-xl' src={carousel?.image?.url} alt="" />
+              <CarouselItem key={carousel?.id} className=' flex items-center justify-center '>
+                <img className='max-h-96 items-center object-center rounded-xl' src={carousel?.image?.url} alt="" />
               </CarouselItem>
             ))}
           </CarouselContent>

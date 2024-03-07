@@ -26,6 +26,18 @@ const GetAverageRatingsGroupByProductId = async () => {
     }
 };
 
+// Get average ratings grouped by product ID
+const GetAverageRatingByProductId = async (productId) => {
+    try {
+        const response = await axios.get(`${baseUrl}/reviews/average/${productId}`);
+        console.log("Average Ratings By Product ID: ", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching average ratings grouped by product ID: ", error);
+        return "";
+    }
+};
+
 // Add a new review
 const AddReview = async (reviewData) => {
     try {
@@ -63,4 +75,4 @@ const DeleteReview = async (reviewId) => {
 };
 
 
-export {GetReviewsByProductId,GetAverageRatingsGroupByProductId,AddReview,EditReview,DeleteReview}
+export {GetReviewsByProductId,GetAverageRatingsGroupByProductId,GetAverageRatingByProductId,AddReview,EditReview,DeleteReview}

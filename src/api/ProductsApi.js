@@ -92,6 +92,16 @@ const getAllProducts = async () => {
   return response.data;
 }
 
+const getProduct = async (productId) => {
+  const response = await axios.get(`${baseUrl}/products/${productId}`)
+  console.log(response);
 
-export { GetProduct, GetProducts, GetProductImages,getAllProducts }
+  if (!response || !response.data) {
+    return null
+  }
+  return response.data;
+}
+
+
+export { GetProduct, GetProducts, GetProductImages,getAllProducts,getProduct }
 

@@ -12,6 +12,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { LoginContextProvider } from "./context/LoginContext";
 import { UserContextProvider } from "./context/UserContext";
 import Cart from "./pages/Cart/Cart";
+import { CartContextProvider } from "./context/CartContext";
 
 
 
@@ -20,23 +21,26 @@ export default function App() {
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <LoginContextProvider >
         <UserContextProvider>
-          <Router>
-            <Header />
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Home />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/:productId" element={<ProductDetails />} />
-              <Route path="/cart" element={<Cart/>} />
-              <Route path="/payment" element={<Cart/>} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-            </Routes>
-          </Router>
+          <CartContextProvider>
+            <Router>
+              <Header />
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/:productId" element={<ProductDetails />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/payment" element={<Cart />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+              </Routes>
+              <Toaster />
+            </Router>
+          </CartContextProvider>
         </UserContextProvider>
       </LoginContextProvider>
 
-      <Toaster />
+
     </ThemeProvider>
   )
 }
