@@ -20,10 +20,11 @@ import { LoginContext } from "@/context/LoginContext";
 import { UserContext } from "@/context/UserContext";
 import { faBars, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/shoeracklogo.png';
 import { ModeToggle } from '../mode-toggle';
+import { Outlet } from "react-router-dom";
 
 function Header() {
   const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
@@ -53,11 +54,11 @@ function Header() {
   }
 
   return (
-    <div>
+    <div className="h-screen ">
       <nav className='h-20 w-full bg-black dark:bg-blue-950 flex items-center justify-around fixed z-10'>
         <div className='md:flex items-center cursor-pointer ms-6' onClick={() => navigate('/')}>
           <img className='h-10 rounded-lg ml-6' src={Logo} alt="logo" />
-          <h2 className='text-white ml-3 dark:text-white text-lg font-bold hidden md:inline'>ShoeRack</h2>
+          <h2 className='text-white ml-3 dark:text-white text-lg font-bold hidden md:inline'>ShoeKeeper</h2>
         </div>
         <Link to={'/products'}><h2 className='font-bold text-white hidden md:inline'>Products</h2> </Link>
         <Input className='p-2 rounded-lg w-auto md:w-[50vw]' type="text" placeholder='Search' />
@@ -95,7 +96,7 @@ function Header() {
           <SheetHeader>
             <div className=' flex items-center cursor-pointer' onClick={() => navigate('/')}>
               <img className='h-10 rounded-lg mr-3' src={Logo} alt="logo" />
-              <h2 className='text-black dark:text-white text-lg font-bold'>ShoeRack</h2>
+              <h2 className='text-black dark:text-white text-lg font-bold'>ShoeKeeper</h2>
             </div>
 
           </SheetHeader>
@@ -126,6 +127,7 @@ function Header() {
           </div>
         </SheetContent>
       </Sheet>
+      <Outlet />
     </div >
   )
 }

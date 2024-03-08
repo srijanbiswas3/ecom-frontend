@@ -36,7 +36,7 @@ function ProductDetails() {
     const [count, setCount] = useState(0)
     const [qty, setQty] = useState(1)
     const [rating, setRating] = useState()
-    const [size, setSize] = useState()
+    const [size, setSize] = useState('44')
 
     const navigate = useNavigate();
 

@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCart } from '@/context/CartContext';
+import { useNavigate } from 'react-router-dom';
 import CartCard from './CartCard';
 
 function Cart() {
+    const navigate = useNavigate();
     const { cartItems, totalCost, totalDiscountCost } = useCart();
 
     return (
@@ -30,7 +32,7 @@ function Cart() {
                 ) : (
                     <p className='text-center'>No Items In Cart</p>
                 )}
-                <Button disabled={cartItems.length > 0 ? false : true} onClick={() => { console.log('proceed') }}>Proceed To Buy</Button>
+                <Button disabled={cartItems.length > 0 ? false : true} onClick={() => navigate('/payment')}>Proceed To Buy</Button>
             </div>
         </div>
     )

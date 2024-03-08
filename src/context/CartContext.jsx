@@ -47,7 +47,6 @@ const CartContextProvider = ({ children }) => {
     }
     const totalCost = () => {
         const total = cartItems.reduce((accumulator, cartItem) => { return accumulator + cartItem?.productPrice*cartItem?.productQty }, 0)
-        console.log("total",total)
         return total;
     }
 

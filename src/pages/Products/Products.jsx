@@ -85,8 +85,8 @@ function Products() {
         </div>
         <div className='md:w-4/5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ml-5 mr-5 h-screen mx-auto'>
           {products.slice(itemCount.startItem, itemCount.endItem).map((product, index) => (
-            <div className="flex justify-center ">
-              <ProductCard product={product} key={product?.id} rating={ratings?.[product?.id]} />
+            <div className="flex justify-center " key={product?.id}>
+              <ProductCard product={product} rating={ratings?.[product?.id]} />
             </div>
           ))}
         </div>
@@ -116,7 +116,7 @@ function Products() {
           </PaginationContent>
         </Pagination>
       </div>
-    </div>
+    </div >
   )
 }
 

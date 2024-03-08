@@ -11,8 +11,8 @@ function ProductCard({ product, rating }) {
     useEffect(() => {
 
         GetProductImages(product?.imageURL).then(resp => {
-            console.log(resp.productImageMapping.productImages);
-            setProductImages(resp.productImageMapping.productImages)
+            console.log(resp?.productImageMapping?.productImages);
+            setProductImages(resp?.productImageMapping?.productImages)
         })
 
     }, [])
