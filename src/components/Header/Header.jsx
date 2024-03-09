@@ -55,12 +55,12 @@ function Header() {
 
   return (
     <div className="h-screen ">
-      <nav className='h-20 w-full bg-black dark:bg-blue-950 flex items-center justify-around fixed z-10'>
+      <nav className='h-20 w-full bg-black dark:bg-blue-950 flex items-center justify-around fixed z-40'>
         <div className='md:flex items-center cursor-pointer ms-6' onClick={() => navigate('/')}>
           <img className='h-10 rounded-lg ml-6' src={Logo} alt="logo" />
           <h2 className='text-white ml-3 dark:text-white text-lg font-bold hidden md:inline'>ShoeKeeper</h2>
         </div>
-        <Link to={'/products'}><h2 className='font-bold text-white hidden md:inline'>Products</h2> </Link>
+        <Link to={'/products'}><h2 className='font-bold text-white hidden md:inline'>Shop</h2> </Link>
         <Input className='p-2 rounded-lg w-auto md:w-[50vw]' type="text" placeholder='Search' />
         <div className='hidden md:inline'>
           <ModeToggle type='icon' />
@@ -91,7 +91,7 @@ function Header() {
       </nav>
       {/* Side Navigation */}
       <Sheet className='h-40' >
-        <SheetTrigger > <FontAwesomeIcon className='text-white text-3xl cursor-pointer ms-3 md:hidden fixed mt-2 z-20' icon={faBars} onClick={menuHandler} /></SheetTrigger>
+        <SheetTrigger > <FontAwesomeIcon className='text-white text-3xl cursor-pointer ms-3 md:hidden fixed mt-2 z-50' icon={faBars} onClick={menuHandler} /></SheetTrigger>
         <SheetContent className={`md:hidden `} side='left'>
           <SheetHeader>
             <div className=' flex items-center cursor-pointer' onClick={() => navigate('/')}>
@@ -116,7 +116,7 @@ function Header() {
 
             <ModeToggle type='switch' />
             <Link to={'/'} className='self-start'> <SheetClose ><h2 className='font-bold'>Home</h2> </SheetClose></Link>
-            <Link to={'/products'} className='self-start'> <SheetClose ><h2 className='font-bold'>Products</h2> </SheetClose></Link>
+            <Link to={'/products'} className='self-start'> <SheetClose ><h2 className='font-bold'>Shop</h2> </SheetClose></Link>
 
             <h2 className='font-bold'>Orders</h2>
             <h2 className='font-bold'>Cart</h2>

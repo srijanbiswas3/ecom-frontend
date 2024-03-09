@@ -23,8 +23,8 @@ function Categories() {
             ) : (
                 <div className='flex justify-center md:justify-between flex-wrap items-center w-full'>
                     {categories.map((category, index) => (
-                        <div key={category?.id} className='bg-white border  rounded-xl m-1 w-full md:w-44 h-44 items-center justify-center flex flex-col relative'>
-                            <img className='h-full cursor-pointer' src={category?.icon?.url} alt="" />
+                        <div key={category?.id} className='bg-white border  rounded-xl m-1 w-full md:w-44 h-44 items-center justify-center flex flex-col relative overflow-hidden'>
+                            <img className='h-full cursor-pointer transition-transform hover:scale-125 ' src={category?.icon?.url} alt="" />
                             <h3 className='text-center font-bold mt-1 rounded-full bg-gray-100 absolute bottom-0 left-0 w-full dark:text-black'>{category?.name}</h3>
                         </div>
                     ))}

@@ -38,10 +38,9 @@ function Filter() {
     };
     const [category, setCategory] = useState(catItems)
     return (
-        <div className='left border h-screen  p-10 '>
+        <div className='left border h-screen  p-10 bg-white overflow-y-auto no-scrollbar pb-52 md:pb-5 '>
 
-            <span>Showing results for :</span>
-            <br />
+            
 
             <span className='font-bold '>Filters</span>
 

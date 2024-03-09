@@ -74,6 +74,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -90,6 +91,18 @@
     @apply ml-[-41px];
     content: counter(step);
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
 }
 
 @media (max-width: 640px) {
@@ -97,4 +110,7 @@
     @apply px-4;
   }
 }
-.star-svg{ display:inline } 
+
+.star-svg {
+  display: inline
+}

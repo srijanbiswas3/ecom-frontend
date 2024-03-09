@@ -73,7 +73,7 @@ function ProductDetails() {
 
     const handleAddToCart = () => {
 
-        const added = addToCart(product, productImages, qty,size)
+        const added = addToCart(product, productImages, qty, size)
         if (added) {
             toast("Item Added to Cart", {
                 action: {
@@ -95,11 +95,11 @@ function ProductDetails() {
     }
 
     return (
-        <div className='container  p-10 md:pt-20'>
+        <div className='container  md:pt-20'>
             <div className='md:flex md:h-[80vh]'>
                 <div className='left  md:w-1/2 m-3 '>
 
-                    <Carousel setApi={setApi} className='mb-20 md:h-[70vh]'>
+                    <Carousel setApi={setApi} className='mb-20 md:h-[70vh] '>
                         <CarouselContent>
                             {productImages?.map((image, index) => (
 
@@ -164,39 +164,42 @@ function ProductDetails() {
                     <span className="mb-2">Size: </span>
                     <div className="flex flex-wrap justify-between m-3 ">
                         {product?.size.split(',').map((sizeStr, index) => (
-                            <div key={index} className={`border rounded-full text-sm text-center m-2 p-2 h-10 w-16 cursor-pointer ${sizeStr==size?'border-2 border-black font-bold':''}`} onClick={()=>{setSize(sizeStr);console.log(sizeStr)}}>
+                            <div key={index} className={`border rounded-full text-sm text-center m-2 p-2 h-10 w-16 cursor-pointer ${sizeStr == size ? 'border-2 border-black font-bold' : ''}`} onClick={() => { setSize(sizeStr); console.log(sizeStr) }}>
                                 {sizeStr}
                             </div>
                         ))}
 
                     </div>
-
-                    <Select value={qty.toString()} defaultValue={qty.toString()} onValueChange={(value) => { setQty(value) }}>
-                        <SelectTrigger className="w-16 m-3">
-                            <SelectValue placeholder="Qty" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup >
-                                <SelectLabel>Qty</SelectLabel>
-                                <SelectItem value="1" >1</SelectItem>
-                                <SelectItem value="2">2</SelectItem>
-                                <SelectItem value="3">3</SelectItem>
-                                <SelectItem value="4">4</SelectItem>
-                                <SelectItem value="5">5</SelectItem>
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                    <div className="flex">
-                    <Button className='mr-5 h-14 w-1/2 ml-3' onClick={()=>{}}>Buy Now</Button>
-                    <Button variant='secondary' className='mr-5 h-14 w-1/2 ' onClick={handleAddToCart}>Add to Cart</Button>
+                    <div className="flex items-center">
+                        <span>Qty : </span>
+                        <Select value={qty.toString()} defaultValue={qty.toString()} onValueChange={(value) => { setQty(value) }}>
+                            <SelectTrigger className="w-16 m-3">
+                                <SelectValue placeholder="Qty" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup >
+                                    <SelectLabel>Qty</SelectLabel>
+                                    <SelectItem value="1" >1</SelectItem>
+                                    <SelectItem value="2">2</SelectItem>
+                                    <SelectItem value="3">3</SelectItem>
+                                    <SelectItem value="4">4</SelectItem>
+                                    <SelectItem value="5">5</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="z-10 w-full left-0 right-0 p-4 bg-white  drop-shadow lg:drop-shadow-none fixed lg:relative bottom-0 flex gap-2">
+                        <Button className=' h-14 w-1/2' onClick={() => { }}>Buy Now</Button>
+                        <Button variant='secondary' className=' h-14 w-1/2 ' onClick={handleAddToCart}>Add to Cart</Button>
                     </div>
                 </div>
             </div>
             <div className=''>
                 Item Details
             </div>
-
-            <Reviews productId={state?.productId} rating={rating} />
+            <div className="mb-20s">
+                <Reviews productId={state?.productId} rating={rating} />
+            </div>
 
         </div>
 
