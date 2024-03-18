@@ -10,12 +10,6 @@ function Categories() {
 
     }, [])
 
-    // const getCategories = () => {
-    //     GetCategories().then(resp => {
-    //         console.log(resp.categories)
-    //         setCategories(resp.categories);
-    //     })
-    // }
     const categoryClick = (category) => {
         console.log(category)
 
@@ -23,10 +17,10 @@ function Categories() {
     return (
         <div className='container my-5 space-y-4'>
             <span className='font-bold'>Shop by Categories</span>
-            {categories.length == 0 ? <Skeleton className="h-44 w-full rounded-xl" />
+            {categories?.length == 0 ? <Skeleton className="h-44 w-full rounded-xl" />
                 :
                 <div className='grid grid-cols-2 gap-2 place-items-center md:grid-cols-3 lg:grid-cols-5'>
-                    {categories.map((category, index) => (
+                    {categories?.map((category, index) => (
                         <div key={category?.id} className='m-1 bg-gray-400 rounded-lg md:h-52 md:w-52 justify-around items-center flex flex-col hover:border overflow-hidden ' onClick={() => categoryClick(category)}>
                             <CategoryImageComponent imgurl={category?.imageUrl} />
                              <span className='font-bold z-10 absolute text-white'>{category?.description}</span> 

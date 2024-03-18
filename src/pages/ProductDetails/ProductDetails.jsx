@@ -171,7 +171,7 @@ function ProductDetails() {
                     <p className=' mb-2'>Category: {product?.category.description}</p>
                     <span className="mb-2">Size: </span>
                     <div className="flex flex-wrap justify-between m-3 ">
-                        {product?.size.split(',').map((sizeStr, index) => (
+                        {product?.size?.split(',').map((sizeStr, index) => (
                             <div key={index} className={`border rounded-full text-sm text-center m-2 p-2 h-10 w-16 cursor-pointer ${sizeStr == size ? 'border-2 border-black font-bold' : ''}`} onClick={() => { setSize(sizeStr); console.log(sizeStr) }}>
                                 {sizeStr}
                             </div>
@@ -208,7 +208,7 @@ function ProductDetails() {
                 <span className="font-bold ml-10"> Item Details</span>
 
                 <ul className="list-disc m-20">
-                    {product?.details.split(',').map((detail, index) => (
+                    {product?.details?.split(',').map((detail, index) => (
                         <li key={index} className="font-medium">{detail}</li>
                     ))}
                 </ul>
