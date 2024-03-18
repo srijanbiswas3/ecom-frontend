@@ -1,10 +1,12 @@
 import { GetBrandLogo, getAllBrands } from '@/api/BrandApi'
 import { Skeleton } from "@/components/ui/skeleton"
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 function Brands() {
     const [brands, setBrands] = useState([])
+    const navigate = useNavigate()
     useEffect(() => {
         getAllBrands().then(resp => {
             setBrands(resp);
@@ -14,6 +16,7 @@ function Brands() {
 
     const brandClick = (brand) => {
         console.log(brand)
+        navigate('/products')
     }
     return (
         <div className='container my-5 space-y-4'>

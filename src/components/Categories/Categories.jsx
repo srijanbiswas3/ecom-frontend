@@ -1,9 +1,10 @@
-import { GetBrands, GetCategories } from '@/api/HomeApi'
-import React, { useEffect, useState } from 'react'
-import { Skeleton } from "@/components/ui/skeleton"
 import { GetCategoryIcon, getAllCategories } from '@/api/CategoriesApi'
+import { Skeleton } from "@/components/ui/skeleton"
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Categories() {
+    const navigate = useNavigate()
     const [categories, setCategories] = useState([])
     useEffect(() => {
         getAllCategories().then(resp => { setCategories(resp) })
@@ -12,7 +13,7 @@ function Categories() {
 
     const categoryClick = (category) => {
         console.log(category)
-
+        navigate('/products')
     }
     return (
         <div className='container my-5 space-y-4'>
@@ -23,7 +24,7 @@ function Categories() {
                     {categories?.map((category, index) => (
                         <div key={category?.id} className='m-1 bg-gray-400 rounded-lg md:h-52 md:w-52 justify-around items-center flex flex-col hover:border overflow-hidden ' onClick={() => categoryClick(category)}>
                             <CategoryImageComponent imgurl={category?.imageUrl} />
-                             <span className='font-bold z-10 absolute text-white'>{category?.description}</span> 
+                            <span className='font-bold z-10 absolute text-white'>{category?.description}</span>
                         </div>
                     ))}
 
@@ -40,12 +41,12 @@ function CategoryImageComponent({ imgurl }) {
     }, [imgurl])
 
     return (
-        <img 
-        className='w-full object-cover cursor-pointer hover:scale-125 transition-all duration-500 brightness-75 hover:brightness-50'
-        src={categoryIcon} 
-        alt="" 
-      />
-      
+        <img
+            className='w-full object-cover cursor-pointer hover:scale-125 transition-all duration-500 brightness-75 hover:brightness-50'
+            src={categoryIcon}
+            alt=""
+        />
+
     )
 
 }
