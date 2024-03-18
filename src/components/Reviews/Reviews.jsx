@@ -18,17 +18,17 @@ function Reviews({ productId, rating }) {
 
     return (
 
-        <div className='md:flex'>
+        <div className='md:flex min-h-52'>
 
             <div className='left md:w-1/2 ml-10'>
                 <h1 className='text-lg font-semibold'>TOTAL RATINGS</h1>
                 <Rating
                     transition
-                    initialValue={rating}
+                    initialValue={rating?.avgRating}
                     readonly
                     allowFraction
                 />
-        
+                ({rating?.userCount?rating?.userCount:0})
             </div>
             <div className='right ml-10 md:w-1/2'>
                 <h1 className='text-lg font-semibold'>REVIEWS</h1>

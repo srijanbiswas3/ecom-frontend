@@ -33,7 +33,7 @@ const GetAverageRatingByProductId = async (productId) => {
         console.log("Average Ratings By Product ID: ", response.data);
         return response.data;
     } catch (error) {
-        console.error("Error fetching average ratings grouped by product ID: ", error);
+        console.error("Error fetching average ratings by product ID: ", error);
         return "";
     }
 };

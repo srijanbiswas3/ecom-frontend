@@ -1,3 +1,4 @@
+import { GetBrandLogo } from "@/api/BrandApi";
 import { GetProductImages, getProduct } from "@/api/ProductsApi";
 import { GetAverageRatingByProductId } from "@/api/ReviewApi";
 import Reviews from "@/components/Reviews/Reviews";
@@ -37,6 +38,7 @@ function ProductDetails() {
     const [qty, setQty] = useState(1)
     const [rating, setRating] = useState()
     const [size, setSize] = useState('44')
+    const [brandLogo, setBrandLogo] = useState()
 
     const navigate = useNavigate();
 
@@ -49,6 +51,12 @@ function ProductDetails() {
                 console.log(resp);
                 setProductImages(resp?.productImageMapping?.productImages)
             })
+            GetBrandLogo(resp?.brand?.logoUrl).then(resp => {
+                console.log(resp)
+                setBrandLogo(resp?.brand?.brandLogo?.url)
+
+            })
+
         })
         GetAverageRatingByProductId(state?.productId).then(resp => {
             console.log(resp);
@@ -131,7 +139,7 @@ function ProductDetails() {
                     </div>
 
                 </div>
-                <div className='right md:w-1/2 p-6 rounded-md border m-5'>
+                <div className='right md:w-1/2 p-6 rounded-md  m-5'>
 
                     <h2 className='text-2xl font-bold mb-4'>{product?.name}</h2>
                     <p className=' mb-2'>{product?.description}</p>
@@ -144,11 +152,11 @@ function ProductDetails() {
 
                         <Rating
                             transition
-                            initialValue={rating}
+                            initialValue={rating?.avgRating}
                             readonly
                             allowFraction
                         />
-                        <span className='text-yellow-500'>{rating} stars</span>
+                        <span className='text-yellow-500'>{rating?.avgRating} stars</span>
                     </div>
                         :
                         <div>
@@ -157,8 +165,8 @@ function ProductDetails() {
                     }
 
                     <p className=' mb-2'>Warranty: {product?.warranty}</p>
-                    <p className=' mb-2'>Brand: {product?.brand}</p>
-                    <p className=' mb-2'>Details: {product?.details}</p>
+                    <p className=' mb-2'>Brand: {product?.brand?.name}</p>
+
                     <p className=' mb-2'>Color: {product?.color}</p>
                     <p className=' mb-2'>Category: {product?.category.description}</p>
                     <span className="mb-2">Size: </span>
@@ -194,10 +202,37 @@ function ProductDetails() {
                     </div>
                 </div>
             </div>
-            <div className=''>
-                Item Details
+            <hr />
+            <div className='my-5 space-y-2'>
+
+                <span className="font-bold ml-10"> Item Details</span>
+
+                <ul className="list-disc m-20">
+                    {product?.details.split(',').map((detail, index) => (
+                        <li key={index} className="font-medium">{detail}</li>
+                    ))}
+                </ul>
             </div>
+            <hr />
+            <div className='my-5 space-y-2'>
+
+                <span className="font-bold ml-10"> About the Brand</span>
+
+                <div className="m-20 font-medium md:flex gap-2 ">
+                    <img src={brandLogo} alt="" className="inline" />
+                    <div>
+                        <p className=' mb-2'>Name: {product?.brand?.name}</p>
+                        <p className=' mb-2'>Description: {product?.brand?.description}</p>
+                        <p className=' mb-2'>Founded Date: {product?.brand?.foundedDate}</p>
+                        <a href={product?.brand?.websiteUrl} target="_blank" rel="noopener noreferrer" className=' text-blue-500 hover:text-blue-700 focus:text-blue-700 mb-2'> {product?.brand?.websiteUrl}</a>
+                    </div>
+                </div>
+
+
+            </div>
+            <hr />
             <div className="mb-20s">
+
                 <Reviews productId={state?.productId} rating={rating} />
             </div>
 

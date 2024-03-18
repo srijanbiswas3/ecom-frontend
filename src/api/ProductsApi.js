@@ -73,10 +73,7 @@ const GetProductImages = async (imageId) => {
       }
       name
     }
-  }
-  
-  
-      `
+  }`
 
   const result = await request(MASTER_URL, productImages)
   return result;

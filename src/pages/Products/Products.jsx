@@ -2,11 +2,17 @@ import { getAllProducts } from '@/api/ProductsApi';
 import { GetAverageRatingsGroupByProductId } from '@/api/ReviewApi';
 import Filter from '@/components/Filter/Filter';
 import ProductCard from '@/components/ProductCard/ProductCard';
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
 
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { ALargeSmall, ArrowDownWideNarrow, ArrowUpDown, ArrowUpWideNarrow, Filter as FilterIcon, GanttChart, Star } from "lucide-react";
 
 
 function Products() {
@@ -16,6 +22,7 @@ function Products() {
   const [pages, setPages] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [products, setProducts] = useState([])
+  const [filterProducts, setFilterProducts] = useState([])
   const noOfItems = 10
   const [itemCount, setItemCount] = useState({
     startItem: 0,
@@ -23,7 +30,7 @@ function Products() {
   })
   const [hideFilter, setHideFilter] = useState(true)
   const [ratings, setRatings] = useState()
-  const sample = []
+
   const pagess = []
   useEffect(() => {
     getProducts()
@@ -45,6 +52,7 @@ function Products() {
       .then(resp => {
         console.log(resp);
         setProducts(resp)
+        setFilterProducts(resp)
       })
 
       .catch(error => {
@@ -69,25 +77,73 @@ function Products() {
       });
 
   };
+  const compareByRating = (productIdA, productIdB) => {
+    const ratingA = ratings?.[productIdA]?.avgRating || 0;
+    const ratingB = ratings?.[productIdB]?.avgRating || 0;
+    return ratingB - ratingA; // Descending order
+  };
 
+  const compareByReviews = (productIdA, productIdB) => {
+    const reviewCountA = ratings?.[productIdA]?.userCount || 0;
+    const reviewCountB = ratings?.[productIdB]?.userCount || 0;
+    return reviewCountB - reviewCountA; // Descending order
+  };
+  const handleSort = (sortBy) => {
+    console.log(sortBy)
+    switch (sortBy) {
+      case 'name':
+        return setFilterProducts(filterProducts.slice().sort((a, b) => a.name.localeCompare(b.name)));
+      case 'rating':
+        return setFilterProducts(filterProducts.slice().sort((a, b) => compareByRating(a.id, b.id)));
+      case 'reviews':
+        return setFilterProducts(filterProducts.slice().sort((a, b) => compareByReviews(a.id, b.id)));
+      case 'pricehl':
+        return setFilterProducts(filterProducts.slice().sort((a, b) => b.discountedPrice - a.discountedPrice));
+      case 'pricelh':
+        return setFilterProducts(filterProducts.slice().sort((a, b) => a.discountedPrice - b.discountedPrice));
+      default:
+        return filterProducts;
+    }
+
+  }
 
   return (
     <div className=' container mt-20'>
       <div className='flex justify-center'>
 
         <div className="z-20 w-full left-0 right-0 p-4 bg-white  drop-shadow lg:drop-shadow-none fixed lg:relative bottom-0 flex gap-2 md:hidden">
-          <Button className=' h-14 w-1/2' onClick={() => { setHideFilter(!hideFilter); console.log(hideFilter) }}>Filter</Button>
-          <Button variant='secondary' className=' h-14 w-1/2 ' >Sort</Button>
+          <Button className=' h-14 w-1/2' onClick={() => { setHideFilter(!hideFilter); console.log(hideFilter) }}><FilterIcon className="mr-2 h-4 w-4 " /> Filter</Button>
+          <Button variant='secondary' className=' h-14 w-1/2 ' ><ArrowUpDown className="mr-2 h-4 w-4 " />Sort</Button>
         </div>
-        <div className={`md:w-1/5 min-w-52 fixed h-full z-10 w-full md:left-0 -mt-10 md:mt-0 ${hideFilter?'hidden':''} md:relative md:block `}>
-          <Filter />
+        <div className={`md:w-1/5 min-w-52 fixed h-full z-10 w-full md:left-0 -mt-10 md:mt-0 ${hideFilter ? 'hidden' : ''} md:relative md:block `}>
+          <Filter setFilterProducts={setFilterProducts} filterProducts={filterProducts} products={products}  />
         </div>
-        <div className='md:w-4/5 ml-3 space-y-3'>
-          <span className='mx-3 '>Showing results for : search</span>
+        <div className='md:w-4/5 ml-3 space-y-3 '>
+          <div className='flex justify-between w-full '>
+            <p className='mx-3 '>Showing results for : search</p>
+            {/* <Button variant='outline' className='hidden md:flex' onClick >
+              <ArrowUpDown className="mr-2 h-4 w-4 " />Sort
+            </Button> */}
+            <DropdownMenu>
+              <DropdownMenuTrigger >
+                <Button variant='outline' className='hidden md:flex'>
+                  <ArrowUpDown className="mr-2 h-4 w-4 " />Sort
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => handleSort('name')}><ALargeSmall className="mr-2 h-4 w-4 " />Name</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSort('pricehl')}><ArrowDownWideNarrow className="mr-2 h-4 w-4 " />Price(High-Low)</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSort('pricelh')}><ArrowUpWideNarrow className="mr-2 h-4 w-4 " />Price(Low-High)</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSort('rating')}><Star className="mr-2 h-4 w-4 " />Rating</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSort('reviews')}><GanttChart className="mr-2 h-4 w-4 " />Reviews</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+          </div>
           <br />
           <div className=' grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  '>
 
-            {products.slice(itemCount.startItem, itemCount.endItem).map((product, index) => (
+            {filterProducts.slice(itemCount.startItem, itemCount.endItem).map((product, index) => (
               <div className="flex justify-center" key={product?.id}>
                 <ProductCard product={product} rating={ratings?.[product?.id]} />
               </div>

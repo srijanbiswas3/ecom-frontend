@@ -119,7 +119,7 @@ function Header() {
             <Link to={'/products'} className='self-start'> <SheetClose ><h2 className='font-bold'>Shop</h2> </SheetClose></Link>
 
             <h2 className='font-bold'>Orders</h2>
-            <h2 className='font-bold'>Cart</h2>
+            <h2 className='font-bold' onClick={() => navigate('/cart')}><SheetClose>Cart</SheetClose> </h2>
             <h2 className='font-bold'>Settings</h2>
             <hr />
             {user && <span className='self-start text-red-500 font-medium' onClick={handleLogOut}>  <SheetClose >Log Out</SheetClose></span>}

@@ -1,24 +1,22 @@
-import { ThemeProvider } from "@/components/theme-provider"
-import Header from './components/Header/Header'
+import { ThemeProvider } from "@/components/theme-provider";
+import Header from './components/Header/Header';
 // import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { Toaster } from "@/components/ui/sonner";
 import {
-  createBrowserRouter,
   RouterProvider,
-  Navigate
+  createBrowserRouter
 } from "react-router-dom";
-import Login from './pages/Login/Login';
-import About from './pages/About/About';
-import Contact from './pages/Contact/Contact';
-import Home from "./pages/Home/Home";
-import Products from "./pages/Products/Products";
-import ProductDetails from "./pages/ProductDetails/ProductDetails";
-import { Toaster } from "@/components/ui/sonner"
+import { CartContextProvider } from "./context/CartContext";
 import { LoginContextProvider } from "./context/LoginContext";
 import { UserContextProvider } from "./context/UserContext";
+import About from './pages/About/About';
 import Cart from "./pages/Cart/Cart";
-import { CartContextProvider } from "./context/CartContext";
-import Payment from "./pages/Payment/Payment";
 import ErrorPage from "./pages/Error/error-page";
+import Home from "./pages/Home/Home";
+import Login from './pages/Login/Login';
+import Payment from "./pages/Payment/Payment";
+import ProductDetails from "./pages/ProductDetails/ProductDetails";
+import Products from "./pages/Products/Products";
 
 
 

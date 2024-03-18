@@ -19,7 +19,7 @@ function Cart() {
                     ))}
                 </ScrollArea>
             </div>
-            <div className='rounded-xl md:w-1/4 bg-slate-100 text-end p-10 m-5 h-60 flex flex-col justify-end '>
+            <div className='rounded-xl md:w-1/4 p-1 bg-slate-100 text-end  m-5 h-60 flex flex-col justify-end '>
                 {cartItems.length > 0 ? (
                     <div className='m-5'>
                         <p>Total Price: <del>{totalCost()}</del></p>
@@ -32,7 +32,7 @@ function Cart() {
                 ) : (
                     <p className='text-center'>No Items In Cart</p>
                 )}
-                <Button disabled={cartItems.length > 0 ? false : true} onClick={() => navigate('/payment')}>Proceed To Buy</Button>
+                <Button className='ml-5 mr-5 mb-5'  disabled={cartItems.length > 0 ? false : true} onClick={() => navigate('/payment')}>Proceed To Buy</Button>
             </div>
         </div>
     )

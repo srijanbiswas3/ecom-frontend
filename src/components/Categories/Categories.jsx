@@ -1,38 +1,59 @@
 import { GetBrands, GetCategories } from '@/api/HomeApi'
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from "@/components/ui/skeleton"
+import { GetCategoryIcon, getAllCategories } from '@/api/CategoriesApi'
 
 function Categories() {
     const [categories, setCategories] = useState([])
     useEffect(() => {
-        getCategories()
-        console.log(categories)
+        getAllCategories().then(resp => { setCategories(resp) })
+
     }, [])
 
-    const getCategories = () => {
-        GetCategories().then(resp => {
-            console.log(resp.categories)
-            setCategories(resp.categories);
-        })
+    // const getCategories = () => {
+    //     GetCategories().then(resp => {
+    //         console.log(resp.categories)
+    //         setCategories(resp.categories);
+    //     })
+    // }
+    const categoryClick = (category) => {
+        console.log(category)
+
     }
     return (
-        <div className='container my-5'>
-            Shop by Categories
-            {categories.length === 0 ? (
-                <Skeleton className="h-44 w-full rounded-xl" />
-            ) : (
-                <div className='flex justify-center md:justify-between flex-wrap items-center w-full'>
+        <div className='container my-5 space-y-4'>
+            <span className='font-bold'>Shop by Categories</span>
+            {categories.length == 0 ? <Skeleton className="h-44 w-full rounded-xl" />
+                :
+                <div className='grid grid-cols-2 gap-2 place-items-center md:grid-cols-3 lg:grid-cols-5'>
                     {categories.map((category, index) => (
-                        <div key={category?.id} className='bg-white border  rounded-xl m-1 w-full md:w-44 h-44 items-center justify-center flex flex-col relative overflow-hidden'>
-                            <img className='h-full cursor-pointer transition-transform hover:scale-125 ' src={category?.icon?.url} alt="" />
-                            <h3 className='text-center font-bold mt-1 rounded-full bg-gray-100 absolute bottom-0 left-0 w-full dark:text-black'>{category?.name}</h3>
+                        <div key={category?.id} className='m-1 bg-gray-400 rounded-lg md:h-52 md:w-52 justify-around items-center flex flex-col hover:border overflow-hidden ' onClick={() => categoryClick(category)}>
+                            <CategoryImageComponent imgurl={category?.imageUrl} />
+                             <span className='font-bold z-10 absolute text-white'>{category?.description}</span> 
                         </div>
                     ))}
-                </div>
-            )}
 
+                </div>
+            }
         </div>
     )
+}
+function CategoryImageComponent({ imgurl }) {
+
+    const [categoryIcon, setCategoryIcon] = useState()
+    useEffect(() => {
+        GetCategoryIcon(imgurl).then(resp => { console.log(resp); setCategoryIcon(resp?.category?.icon?.url) })
+    }, [imgurl])
+
+    return (
+        <img 
+        className='w-full object-cover cursor-pointer hover:scale-125 transition-all duration-500 brightness-75 hover:brightness-50'
+        src={categoryIcon} 
+        alt="" 
+      />
+      
+    )
+
 }
 
 export default Categories
