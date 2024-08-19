@@ -25,6 +25,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/shoeracklogo.png';
 import { ModeToggle } from '../mode-toggle';
 import { Outlet } from "react-router-dom";
+import Loading from "../Loading/Loading";
 
 function Header() {
   const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
@@ -127,6 +128,7 @@ function Header() {
           </div>
         </SheetContent>
       </Sheet>
+      <Loading/>
       <Outlet />
     </div >
   )

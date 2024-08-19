@@ -38,6 +38,17 @@ const GetAverageRatingByProductId = async (productId) => {
     }
 };
 
+const GetChartDataByProductId = async (productId) => {
+    try {
+        const response = await axios.get(`${baseUrl}/reviews/chartData/${productId}`);
+        console.log("Chart Data By Product ID: ", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching Chart Data By Product ID: ", error);
+        return "";
+    }
+};
+
 // Add a new review
 const AddReview = async (reviewData) => {
     try {
@@ -75,4 +86,4 @@ const DeleteReview = async (reviewId) => {
 };
 
 
-export {GetReviewsByProductId,GetAverageRatingsGroupByProductId,GetAverageRatingByProductId,AddReview,EditReview,DeleteReview}
+export {GetReviewsByProductId,GetAverageRatingsGroupByProductId,GetAverageRatingByProductId,AddReview,EditReview,DeleteReview,GetChartDataByProductId}

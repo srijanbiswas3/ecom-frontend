@@ -17,6 +17,8 @@ import Login from './pages/Login/Login';
 import Payment from "./pages/Payment/Payment";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Products from "./pages/Products/Products";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 
 
@@ -62,17 +64,18 @@ export default function App() {
   ]);
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <LoginContextProvider >
-        <UserContextProvider>
-          <CartContextProvider>
+      <Provider store={store}>
+        <LoginContextProvider >
+          <UserContextProvider>
+            <CartContextProvider>
 
-            <RouterProvider router={router} >
+              <RouterProvider router={router} >
 
 
-            </RouterProvider>
-            {/* <Header /> */}
-            <Toaster />
-            {/* <Router>
+              </RouterProvider>
+              {/* <Header /> */}
+              <Toaster />
+              {/* <Router>
               <Header />
               <Routes>
                 <Route path="/login" element={<Login />} />
@@ -86,10 +89,10 @@ export default function App() {
               </Routes>
               <Toaster />
             </Router> */}
-          </CartContextProvider>
-        </UserContextProvider>
-      </LoginContextProvider>
-
+            </CartContextProvider>
+          </UserContextProvider>
+        </LoginContextProvider>
+      </Provider>
 
     </ThemeProvider>
   )

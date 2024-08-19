@@ -12,7 +12,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { hideLoading, showLoading } from '@/redux/loadingSlice';
 import { ALargeSmall, ArrowDownWideNarrow, ArrowUpDown, ArrowUpWideNarrow, Filter as FilterIcon, GanttChart, Star } from "lucide-react";
+import { useDispatch } from 'react-redux';
 
 
 function Products() {
@@ -31,52 +33,38 @@ function Products() {
   const [hideFilter, setHideFilter] = useState(true)
   const [ratings, setRatings] = useState()
 
+  const dispatch = useDispatch()
   const pagess = []
+
   useEffect(() => {
-    getProducts()
-    getRatings()
+    const fetchProductList = async () => {
+      dispatch(showLoading())
+      try {
+        const productResp = await getAllProducts();
+        console.log(productResp);
+        setProducts(productResp);
+        setFilterProducts(productResp);
 
+        const ratingsResp = await GetAverageRatingsGroupByProductId();
+        console.log(ratingsResp);
+        setRatings(ratingsResp);
 
-    for (let i = 1; i < Math.ceil(products.length / noOfItems); i++) {
-      pagess.push(i)
+        // Now that products are fetched, set up pagination
+        for (let i = 1; i < Math.ceil(productResp.length / noOfItems); i++) {
+          pagess.push(i);
+        }
+        setPages(pagess);
+      } catch (error) {
+        console.error(error)
+      }
+      finally {
+        dispatch(hideLoading())
+      }
     }
-    setPages(pagess)
+    fetchProductList();
+  }, [dispatch])
 
 
-  }, [])
-
-
-  const getProducts = () => {
-
-    getAllProducts()
-      .then(resp => {
-        console.log(resp);
-        setProducts(resp)
-        setFilterProducts(resp)
-      })
-
-      .catch(error => {
-        console.error("Error fetching products", error);
-
-      });
-
-  };
-
-
-  const getRatings = () => {
-
-    GetAverageRatingsGroupByProductId()
-      .then(resp => {
-        console.log(resp);
-        setRatings(resp)
-      })
-
-      .catch(error => {
-        console.error("Error fetching products", error);
-
-      });
-
-  };
   const compareByRating = (productIdA, productIdB) => {
     const ratingA = ratings?.[productIdA]?.avgRating || 0;
     const ratingB = ratings?.[productIdB]?.avgRating || 0;
@@ -116,7 +104,7 @@ function Products() {
           <Button variant='secondary' className=' h-14 w-1/2 ' ><ArrowUpDown className="mr-2 h-4 w-4 " />Sort</Button>
         </div>
         <div className={`md:w-1/5 min-w-52 fixed h-full z-10 w-full md:left-0 -mt-10 md:mt-0 ${hideFilter ? 'hidden' : ''} md:relative md:block `}>
-          <Filter setFilterProducts={setFilterProducts} filterProducts={filterProducts} products={products}  />
+          <Filter setFilterProducts={setFilterProducts} filterProducts={filterProducts} products={products} />
         </div>
         <div className='md:w-4/5 ml-3 space-y-3 '>
           <div className='flex justify-between w-full '>

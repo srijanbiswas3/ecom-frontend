@@ -25,6 +25,10 @@ import Zoom from 'react-img-zoom';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Rating } from 'react-simple-star-rating';
 import { toast } from "sonner";
+import ErrorPage from "../Error/error-page";
+import { useDispatch } from "react-redux";
+import { showLoading, hideLoading } from "@/redux/loadingSlice";
+
 
 function ProductDetails() {
     const { addToCart } = useCart()
@@ -41,30 +45,36 @@ function ProductDetails() {
     const [brandLogo, setBrandLogo] = useState()
 
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log(state)
+        const fetchProductData = async () => {
+            dispatch(showLoading());
+            try {
+                if (!state) {
+                    return;
+                }
 
-        getProduct(state?.productId).then(resp => {
-            setProduct(resp)
-            GetProductImages(resp?.imageURL).then(resp => {
-                console.log(resp);
-                setProductImages(resp?.productImageMapping?.productImages)
-            })
-            GetBrandLogo(resp?.brand?.logoUrl).then(resp => {
-                console.log(resp)
-                setBrandLogo(resp?.brand?.brandLogo?.url)
+                const productData = await getProduct(state?.productId);
+                setProduct(productData);
 
-            })
+                const imagesData = await GetProductImages(productData?.imageURL);
+                setProductImages(imagesData?.productImageMapping?.productImages);
 
-        })
-        GetAverageRatingByProductId(state?.productId).then(resp => {
-            console.log(resp);
-            setRating(resp)
-        })
+                const brandLogoData = await GetBrandLogo(productData?.brand?.logoUrl);
+                setBrandLogo(brandLogoData?.brand?.brandLogo?.url);
 
+                const ratingData = await GetAverageRatingByProductId(state?.productId);
+                setRating(ratingData);
+            } catch (e) {
+                console.error(e);
+            } finally {
+                dispatch(hideLoading());
+            }
+        };
 
-    }, [])
+        fetchProductData();
+    }, [state, dispatch]);
 
     useEffect(() => {
         if (!api) {
@@ -78,6 +88,7 @@ function ProductDetails() {
             setCurrent(api.selectedScrollSnap() + 1)
         })
     }, [api])
+
 
     const handleAddToCart = () => {
 
@@ -102,6 +113,9 @@ function ProductDetails() {
 
     }
 
+    if (!state) {
+        return <ErrorPage />;
+    }
     return (
         <div className='container  md:pt-20'>
             <div className='md:flex md:h-[80vh]'>
