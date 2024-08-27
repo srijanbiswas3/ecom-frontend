@@ -1,6 +1,5 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from './components/Header/Header';
-// import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import { Toaster } from "@/components/ui/sonner";
 import {
   RouterProvider,
@@ -9,18 +8,20 @@ import {
 import { CartContextProvider } from "./context/CartContext";
 import { LoginContextProvider } from "./context/LoginContext";
 import { UserContextProvider } from "./context/UserContext";
-import About from './pages/About/About';
-import Cart from "./pages/Cart/Cart";
 import ErrorPage from "./pages/Error/error-page";
-import Home from "./pages/Home/Home";
-import Login from './pages/Login/Login';
-import Payment from "./pages/Payment/Payment";
-import ProductDetails from "./pages/ProductDetails/ProductDetails";
-import Products from "./pages/Products/Products";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import React, { Suspense } from 'react';
+import Loading from "./components/Loading/Loading";
 
-
+// Lazy load components
+const About = React.lazy(() => import('./pages/About/About'));
+const Cart = React.lazy(() => import("./pages/Cart/Cart"));
+const Home = React.lazy(() => import("./pages/Home/Home"));
+const Login = React.lazy(() => import('./pages/Login/Login'));
+const Payment = React.lazy(() => import("./pages/Payment/Payment"));
+const ProductDetails = React.lazy(() => import("./pages/ProductDetails/ProductDetails"));
+const Products = React.lazy(() => import("./pages/Products/Products"));
 
 export default function App() {
 
@@ -30,71 +31,78 @@ export default function App() {
       element: <Header />,
       errorElement: <ErrorPage />,
       children: [
-        // { index: true, element: <Navigate to="/home" replace /> },
         {
           path: "/",
-          element: <Home />,
+          element: (
+            <Suspense fallback={<Loading/>}>
+              <Home />
+            </Suspense>
+          ),
         },
         {
           path: "/login",
-          element: <Login />,
+          element: (
+            <Suspense fallback={<Loading/>}>
+              <Login />
+            </Suspense>
+          ),
         },
         {
           path: "/products",
-          element: <Products />,
+          element: (
+            <Suspense fallback={<Loading/>}>
+              <Products />
+            </Suspense>
+          ),
         },
         {
           path: "/products/:productId",
-          element: <ProductDetails />,
+          element: (
+            <Suspense fallback={<Loading/>}>
+              <ProductDetails />
+            </Suspense>
+          ),
         },
         {
           path: "/cart",
-          element: <Cart />,
+          element: (
+            <Suspense fallback={<Loading/>}>
+              <Cart />
+            </Suspense>
+          ),
         },
         {
           path: "/payment",
-          element: <Payment />,
+          element: (
+            <Suspense fallback={<Loading/>}>
+              <Payment />
+            </Suspense>
+          ),
         },
         {
           path: "/about",
-          element: <About />,
-        },]
+          element: (
+            <Suspense fallback={<Loading/>}>
+              <About />
+            </Suspense>
+          ),
+        },
+      ]
     },
-
   ]);
+
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Provider store={store}>
         <LoginContextProvider >
           <UserContextProvider>
             <CartContextProvider>
-
-              <RouterProvider router={router} >
-
-
-              </RouterProvider>
-              {/* <Header /> */}
+              <RouterProvider router={router} />
               <Toaster />
-              {/* <Router>
-              <Header />
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:productId" element={<ProductDetails />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/payment" element={<Payment />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-              </Routes>
-              <Toaster />
-            </Router> */}
             </CartContextProvider>
           </UserContextProvider>
         </LoginContextProvider>
       </Provider>
-
     </ThemeProvider>
   )
 }
-

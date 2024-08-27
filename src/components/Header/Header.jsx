@@ -15,17 +15,16 @@ import {
   SheetHeader,
   SheetTrigger
 } from "@/components/ui/sheet";
-import { CartContext, useCart } from "@/context/CartContext";
+import { useCart } from "@/context/CartContext";
 import { LoginContext } from "@/context/LoginContext";
 import { UserContext } from "@/context/UserContext";
 import { faBars, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/shoeracklogo.png';
-import { ModeToggle } from '../mode-toggle';
-import { Outlet } from "react-router-dom";
 import Loading from "../Loading/Loading";
+import { ModeToggle } from '../mode-toggle';
 
 function Header() {
   const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);

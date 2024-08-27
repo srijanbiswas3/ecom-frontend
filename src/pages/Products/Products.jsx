@@ -62,6 +62,9 @@ function Products() {
       }
     }
     fetchProductList();
+    return()=>{
+      dispatch(hideLoading());
+  }
   }, [dispatch])
 
 

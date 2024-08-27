@@ -22,12 +22,13 @@ import {
 import { useCart } from "@/context/CartContext";
 import { useEffect, useState } from 'react';
 import Zoom from 'react-img-zoom';
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Rating } from 'react-simple-star-rating';
 import { toast } from "sonner";
 import ErrorPage from "../Error/error-page";
-import { useDispatch } from "react-redux";
-import { showLoading, hideLoading } from "@/redux/loadingSlice";
+import { hideLoading, showLoading } from "@/redux/loadingSlice";
+
 
 
 function ProductDetails() {
@@ -46,8 +47,10 @@ function ProductDetails() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch()
+    const isLoading = useSelector(state => state.loading)
 
     useEffect(() => {
+
         const fetchProductData = async () => {
             dispatch(showLoading());
             try {
@@ -74,6 +77,10 @@ function ProductDetails() {
         };
 
         fetchProductData();
+        return () => {
+            dispatch(hideLoading());
+        }
+
     }, [state, dispatch]);
 
     useEffect(() => {
@@ -117,6 +124,7 @@ function ProductDetails() {
         return <ErrorPage />;
     }
     return (
+        !isLoading &&
         <div className='container  md:pt-20'>
             <div className='md:flex md:h-[80vh]'>
                 <div className='left  md:w-1/2 m-3 '>
